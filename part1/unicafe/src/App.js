@@ -13,12 +13,12 @@ const App = () => {
       <div>
         <h1>give feedback</h1>
         <div>
-          <button>good</button>
-          <button>neutral</button>
-          <button>bad</button>
+          <button onClick={() => setGood(good + 1)}>good</button>
+          <button onClick={() => setNeutral(neutral + 1)}>neutral</button>
+          <button onClick={() => setBad(bad + 1)}>bad</button>
         </div>
       </div>
-      <Statistics />
+      <Statistics feedBack={{ good, neutral, bad }} />
     </div>
   );
 };
