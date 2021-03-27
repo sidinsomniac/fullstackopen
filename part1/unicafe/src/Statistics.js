@@ -15,12 +15,16 @@ const Statistics = ({ feedBack: { good, neutral, bad } }) => {
         return (
             <div>
                 <h1>statistics</h1>
-                <Statistic text={'good'} value={good} />
-                <Statistic text={'neutral'} value={neutral} />
-                <Statistic text={'bad'} value={bad} />
-                <Statistic text={'all'} value={good + neutral + bad} />
-                <Statistic text={'average'} value={calcAvg(good, neutral, bad)} />
-                <Statistic text={'positive'} value={calcPtg(good, good + neutral + bad) + '%'} />
+                <table>
+                    <tbody>
+                        <Statistic text={'good'} value={good} />
+                        <Statistic text={'neutral'} value={neutral} />
+                        <Statistic text={'bad'} value={bad} />
+                        <Statistic text={'all'} value={good + neutral + bad} />
+                        <Statistic text={'average'} value={calcAvg(good, neutral, bad)} />
+                        <Statistic text={'positive'} value={calcPtg(good, good + neutral + bad) + '%'} />
+                    </tbody>
+                </table>
             </div>);
     return 'No feedback given.';
 };
