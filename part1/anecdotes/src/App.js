@@ -9,11 +9,17 @@ const App = () => {
         'Premature optimization is the root of all evil.',
         'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
     ];
+    const points = {
+        0: 0, 1: 0,
+        2: 0, 3: 0,
+        4: 0, 5: 0
+    };
 
     const [selected, setSelected] = useState(0);
+    const [vote, setVote] = useState({ ...points });
+    const [highestVote, setHighestVote] = useState(null);
 
     const randomlySelect = () => {
-        debugger;
         let arrLen = anecdotes.length;
         let randomNum = Math.floor(Math.random() * arrLen);
         if (randomNum === selected) {
@@ -23,12 +29,48 @@ const App = () => {
         return setSelected(randomNum);
     };
 
+    const determineMostVoted = () => {
+        debugger;
+        let highestIndex = 0, highestNum = 0;
+        for (let v in vote) {
+            if (vote[v] > highestNum) {
+                highestNum = vote[v];
+                highestIndex = v;
+            }
+        }
+        setHighestVote(highestIndex);
+    };
+
+    const voteForAnecdote = () => {
+        setVote({
+            ...vote,
+            [selected]: vote[selected] + 1
+        });
+        determineMostVoted();
+    };
+
     return (
         <div>
-            {anecdotes[selected]}
             <div>
-                <button onClick={randomlySelect}>next anecdote</button>
+                <h1>Anecdote of the day</h1>
+                <p>
+                    {anecdotes[selected]}
+                </p>
+                <p>has {vote[selected]} votes</p>
+                <div>
+                    <button onClick={voteForAnecdote}>vote</button>
+                    <button onClick={randomlySelect}>next anecdote</button>
+                </div>
             </div>
+            {highestVote && (
+                <div>
+                    <h1>Anecdote with most votes</h1>
+                    <p>
+                        {anecdotes[highestVote]}
+                    </p>
+                    <p>has {vote[highestVote]} votes</p>
+                </div>
+            )}
         </div>
     );
 };
