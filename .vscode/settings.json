@@ -1,0 +1,8 @@
+{
+  "files.exclude": {
+    "part0/": true,
+    "part1/courseinfo/": true,
+    "part1/unicafe/": true,
+    "part1/anecdotes/": false
+  }
+}
