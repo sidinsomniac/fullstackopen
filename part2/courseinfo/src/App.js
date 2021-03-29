@@ -1,8 +1,5 @@
 import React from 'react';
-import Content from "./components/Content";
 import Course from "./components/Course";
-import Header from './components/Header';
-import Total from "./components/Total";
 
 const App = () => {
     const course = {
