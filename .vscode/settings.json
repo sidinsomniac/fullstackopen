@@ -3,6 +3,7 @@
     "part0/": true,
     "part1/courseinfo/": true,
     "part1/unicafe/": true,
-    "part1/anecdotes/": false
+    "part1/anecdotes/": true,
+    "part2/courseinfo/": false
   }
 }
