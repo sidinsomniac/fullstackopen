@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CountryDetails from "./components/CountryDetails";
+import CountryList from "./components/CountryList";
 
 const App = () => {
 
@@ -28,8 +29,9 @@ const App = () => {
         if (filteredCountries.length === 1) {
             return <CountryDetails filterCountry={filteredCountries[0]} />;
         }
-        return filteredCountries.map(country => <li key={country.callingCodes[0]}>{country.name}</li>);
+        return <CountryList setSearchQuery={setSearchQuery} filteredCountries={filteredCountries} />;
     };
+
 
     return (
         <div>
