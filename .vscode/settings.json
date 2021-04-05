@@ -5,7 +5,7 @@
     "part1/unicafe/": true,
     "part1/anecdotes/": true,
     "part2/courseinfo/": true,
-    "part2/phonebook/": true,
-    "part2/countries/": false
+    "part2/phonebook/": false,
+    "part2/countries/": true
   }
 }
