@@ -3,12 +3,15 @@ import AddPerson from "./components/AddPerson";
 import Search from "./components/Search";
 import Contacts from "./components/Contacts";
 import contacts from "./services/contacts";
+import Notification from "./components/Notification";
 
 const App = () => {
     const [persons, setPersons] = useState([]);
     const [newName, setNewName] = useState('');
     const [newNumber, setNewNumber] = useState('');
     const [searchVal, setSearchVal] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const renderContacts = () => {
         contacts.getAll().then(res => setPersons(res));
@@ -49,16 +52,35 @@ const App = () => {
     };
 
     const createNewContact = obj => {
-        contacts.create(obj).then(response => setPersons(persons.concat(response)));
+        contacts.create(obj)
+            .then(response => setPersons(persons.concat(response)))
+            .then(
+                () => {
+                    setSuccessMessage(newName + " added!");
+                    setTimeout(() => {
+                        setSuccessMessage('');
+                    }, 3000);
+                }
+            );
     };
 
     const updateContact = (id, obj) => {
-        contacts.update(id, obj).then(renderContacts);
+        contacts
+            .update(id, obj)
+            .then(renderContacts)
+            .catch(err => {
+                setErrorMessage(`Information of ${obj.name} has already been removed from server`);
+                setTimeout(() => {
+                    setErrorMessage('');
+                }, 3000);
+            });
     };
 
     return (
         <div>
             <h2>Phonebook</h2>
+            {successMessage && <Notification message={successMessage} typeOfClass={'success'} />}
+            {errorMessage && <Notification message={errorMessage} typeOfClass={'error'} />}
             <Search searchVal={searchVal} handleFilterChange={handleFilterChange} />
             <AddPerson addPerson={addPerson} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} newName={newName} newNumber={newNumber} />
             <h2>Numbers</h2>

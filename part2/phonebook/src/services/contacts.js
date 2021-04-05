@@ -22,10 +22,7 @@ const create = newObj => {
 const update = (id, newObj) => {
     return axios
         .put(`${baseUrl}/${id}`, newObj)
-        .then(response => response.data)
-        .catch(err => {
-            alert("There was a server error. Please retry.", err);
-        });
+        .then(response => response.data);
 };
 
 const deleteContact = id => {
