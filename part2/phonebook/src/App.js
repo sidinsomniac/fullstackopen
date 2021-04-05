@@ -9,6 +9,7 @@ const App = () => {
     const [newName, setNewName] = useState('');
     const [newNumber, setNewNumber] = useState('');
     const [searchVal, setSearchVal] = useState('');
+
     const renderContacts = () => {
         contacts.getAll().then(res => setPersons(res));
     };
@@ -23,13 +24,14 @@ const App = () => {
     const addPerson = event => {
         event.preventDefault();
         if (!(newName && newNumber)) return;
-        let sameName = persons.filter(person => person.name === newName);
-        if (sameName.length) {
-            alert(`${newName} is already added to phonebook`);
-            return;
-        }
         let newPersonObj = { name: newName, number: newNumber };
-        contacts.create(newPersonObj).then(response => setPersons(persons.concat(response)));
+        let sameName = persons.find(person => person.name === newName);
+        if (sameName?.id) {
+            if (window.confirm(`${sameName.name} is already added to phonebook, replace old number with new one?`))
+                updateContact(sameName.id, newPersonObj);
+        } else {
+            createNewContact(newPersonObj);
+        }
         setNewName('');
         setNewNumber('');
     };
@@ -44,6 +46,14 @@ const App = () => {
 
     const handleFilterChange = event => {
         setSearchVal(event.target.value);
+    };
+
+    const createNewContact = obj => {
+        contacts.create(obj).then(response => setPersons(persons.concat(response)));
+    };
+
+    const updateContact = (id, obj) => {
+        contacts.update(id, obj).then(renderContacts);
     };
 
     return (
