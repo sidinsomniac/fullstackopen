@@ -15,8 +15,13 @@ const create = newObj => {
 
 const update = (id, newObj) => {
     return axios
-        .put(baseUrl + '/id', newObj)
+        .put(`${baseUrl}/${id}`, newObj)
         .then(response => response.data);
 };
 
-export default { getAll, create, update };
+const deleteContact = id => {
+    return axios.delete(`${baseUrl}/${id}`)
+        .then(response => response.data);
+};
+
+export default { getAll, create, update, deleteContact };

@@ -9,10 +9,12 @@ const App = () => {
     const [newName, setNewName] = useState('');
     const [newNumber, setNewNumber] = useState('');
     const [searchVal, setSearchVal] = useState('');
-
-    useEffect(() => {
+    const renderContacts = () => {
         contacts.getAll().then(res => setPersons(res));
-    }, []);
+    };
+
+    useEffect(renderContacts, []);
+
 
     const filteredPeople = persons.filter(person =>
         person.name.toLowerCase().trim().includes(searchVal.toLowerCase().trim())
@@ -50,7 +52,7 @@ const App = () => {
             <Search searchVal={searchVal} handleFilterChange={handleFilterChange} />
             <AddPerson addPerson={addPerson} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} newName={newName} newNumber={newNumber} />
             <h2>Numbers</h2>
-            <Contacts filteredPeople={filteredPeople} />
+            <Contacts renderContacts={renderContacts} filteredPeople={filteredPeople} />
         </div>
     );
 };
