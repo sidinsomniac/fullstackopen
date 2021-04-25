@@ -21,20 +21,22 @@ const App = () => {
 
 
     const filteredPeople = persons.filter(person =>
-        person.name.toLowerCase().trim().includes(searchVal.toLowerCase().trim())
+        person?.name?.toLowerCase().trim().includes(searchVal.toLowerCase().trim())
     );
 
     const addPerson = event => {
         event.preventDefault();
-        if (!(newName && newNumber)) return;
+        // if (!(newName && newNumber)) return;
+        // let newPersonObj = { name: newName, number: newNumber };
+        // let sameName = persons.find(person => person.name === newName);
+        // if (sameName?.id) {
+        //     if (window.confirm(`${sameName?.name} is already added to phonebook, replace old number with new one?`))
+        //         updateContact(sameName?.id, newPersonObj);
+        // } else {
+        //     createNewContact(newPersonObj);
+        // }
         let newPersonObj = { name: newName, number: newNumber };
-        let sameName = persons.find(person => person.name === newName);
-        if (sameName?.id) {
-            if (window.confirm(`${sameName.name} is already added to phonebook, replace old number with new one?`))
-                updateContact(sameName.id, newPersonObj);
-        } else {
-            createNewContact(newPersonObj);
-        }
+        createNewContact(newPersonObj);
         setNewName('');
         setNewNumber('');
     };
@@ -61,20 +63,25 @@ const App = () => {
                         setSuccessMessage('');
                     }, 3000);
                 }
-            );
-    };
-
-    const updateContact = (id, obj) => {
-        contacts
-            .update(id, obj)
-            .then(renderContacts)
-            .catch(err => {
-                setErrorMessage(`Information of ${obj.name} has already been removed from server`);
+            ).catch(err => {
+                setErrorMessage(err.response.data.error);
                 setTimeout(() => {
                     setErrorMessage('');
                 }, 3000);
             });
     };
+
+    // const updateContact = (id, obj) => {
+    //     contacts
+    //         .update(id, obj)
+    //         .then(renderContacts)
+    //         .catch(err => {
+    //             setErrorMessage(`Information of ${obj.name} has already been removed from server`);
+    //             setTimeout(() => {
+    //                 setErrorMessage('');
+    //             }, 3000);
+    //         });
+    // };
 
     return (
         <div>

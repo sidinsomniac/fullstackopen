@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseUrl = 'http://localhost:3001/persons';
+const baseUrl = '/api/persons';
 
 const getAll = () => {
     return axios
@@ -13,10 +13,7 @@ const getAll = () => {
 const create = newObj => {
     return axios
         .post(baseUrl, newObj)
-        .then(response => response.data)
-        .catch(err => {
-            alert("There was a server error. Please retry.", err);
-        });
+        .then(response => response.data);
 };
 
 const update = (id, newObj) => {
@@ -27,10 +24,9 @@ const update = (id, newObj) => {
 
 const deleteContact = id => {
     return axios.delete(`${baseUrl}/${id}`)
-        .then(response => response.data)
-        .catch(err => {
-            alert("There was a server error. Please retry.", err);
-        });
+        .then(response => response.data);
 };
 
-export default { getAll, create, update, deleteContact };
+const restRotues = { getAll, create, update, deleteContact };
+
+export default restRotues;
