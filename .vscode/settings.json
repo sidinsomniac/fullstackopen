@@ -1,11 +1,8 @@
 {
   "files.exclude": {
-    "part0/": true,
-    "part1/courseinfo/": true,
-    "part1/unicafe/": true,
-    "part1/anecdotes/": true,
-    "part2/courseinfo/": true,
-    "part2/phonebook/": false,
-    "part2/countries/": true
+    "part0": true,
+    "part1": true,
+    "part2": true,
+    "part4": false
   }
 }
