@@ -76,6 +76,14 @@ describe("author with", () => {
             blogs: 2
         });
     });
+
+    test("the most liked blogs", () => {
+        const mostLikes = listHelper.mostLikes(listWithMultipleBlogs);
+        expect(mostLikes).toEqual({
+            author: "Hector Hugh Munroe",
+            likes: 34
+        });
+    });
 });
 
 test("dummy returns one", () => {
