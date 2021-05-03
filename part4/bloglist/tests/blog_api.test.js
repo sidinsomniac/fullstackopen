@@ -3,7 +3,6 @@ const supertest = require("supertest");
 const mongoose = require("mongoose");
 const Blog = require("../models/blog");
 const { initialBlogs, blogsInDb } = require("./tests_helper");
-const blog = require("../models/blog");
 const api = supertest(app);
 
 beforeEach(async () => {
