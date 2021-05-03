@@ -22,8 +22,14 @@ const errorHandler = (error, request, response, next) => {
     next(error);
 };
 
+const defaultLikes = (request, response, next) => {
+    request.body.likes = request.body.likes || 0;
+    next();
+};
+
 module.exports = {
     requestLogger,
     unknownEndpoint,
-    errorHandler
+    errorHandler,
+    defaultLikes
 };
