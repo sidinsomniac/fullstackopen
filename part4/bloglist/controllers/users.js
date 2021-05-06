@@ -10,6 +10,11 @@ userRouter.get("/", async (request, response) => {
 userRouter.post("/", async (request, response) => {
     const { body: { username, password, name } } = request;
     const saltRounds = 10;
+
+    if (password.length < 3) {
+        return response.status(400).json({ error: "User validation failed: password: Path `password` is shorter than the minimum allowed length (3)." });
+    }
+
     const passwordHash = await bcrypt.hash(password, saltRounds);
     const newUser = new User({
         username,
