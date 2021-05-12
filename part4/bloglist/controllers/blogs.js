@@ -1,6 +1,5 @@
 const blogsRouter = require("express").Router();
 const Blog = require("../models/blog");
-const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 
 
@@ -11,18 +10,13 @@ blogsRouter.get("/", async (request, response) => {
 });
 
 blogsRouter.post("/", async (request, response) => {
-    const { body: { title, author, url, likes, token } } = request;
-    // eslint-disable-next-line no-undef
-    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
-    if (!token || !decodedToken.id) {
-        return response.status(401).json({ error: "token missing or invalid" });
-    }
-    const user = await User.findById(decodedToken.id);
+    const { body: { title, author, url, likes }, user } = request;
 
     const blog = new Blog({
         title, author, url, likes,
         user: user._id
     });
+
     const savedBlog = await blog.save();
     user.blogs = user.blogs.concat(savedBlog._id);
     await user.save();
@@ -36,7 +30,7 @@ blogsRouter.get("/:id", async (request, response) => {
 });
 
 blogsRouter.delete("/:id", async (request, response) => {
-    const { body: { token }, params: { id } } = request;
+    const { token, user, params: { id } } = request;
     // eslint-disable-next-line no-undef
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
 
@@ -46,11 +40,17 @@ blogsRouter.delete("/:id", async (request, response) => {
 
     const blog = await Blog.findById(id);
 
+    if (!blog) {
+        return response.status(401).json({ error: "blog doesn't exist" });
+    }
+
     if (decodedToken.id !== blog.user.toString()) {
         return response.status(401).json({ error: "not authorized to perform action" });
     }
 
     await Blog.findByIdAndRemove(id);
+    user.blogs = user.blogs.filter(blogid => blogid.toString() !== id);
+    await user.save();
     response.status(204).end();
 });
 

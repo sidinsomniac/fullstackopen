@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 const dummy = list => 1;
 
 const totalLikes = list => {
