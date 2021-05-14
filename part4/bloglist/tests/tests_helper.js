@@ -4,19 +4,19 @@ const User = require("../models/user");
 const initialBlogs = [
     {
         title: "Jo goes to Hollywood",
-        author: "Jason Bourne",
+        author: "Siddhartha Chatterjee",
         url: "http://www.google.com",
         likes: 12,
     },
     {
         title: "Angels and Demons",
-        author: "Dan Brown",
+        author: "Siddhartha Chatterjee",
         url: "http://www.facebook.com",
         likes: 39,
     },
     {
         title: "Murder on the Orient Express",
-        author: "Agatha Christie",
+        author: "Siddhartha Chatterjee",
         url: "http://www.twitter.com",
         likes: 44,
     }
@@ -24,9 +24,9 @@ const initialBlogs = [
 
 const initialUsers = [
     {
-        username: "sidinsomniac",
+        username: "sid",
         name: "Siddhartha Chatterjee",
-        password: "password1234hash"
+        password: "qwerty1234"
     }
 ];
 

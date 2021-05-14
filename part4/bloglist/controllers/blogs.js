@@ -1,6 +1,7 @@
 const blogsRouter = require("express").Router();
 const Blog = require("../models/blog");
 const jwt = require("jsonwebtoken");
+const { tokenExtractor, userExtractor } = require("../utils/middleware");
 
 
 
@@ -9,7 +10,7 @@ blogsRouter.get("/", async (request, response) => {
     response.json(blogs);
 });
 
-blogsRouter.post("/", async (request, response) => {
+blogsRouter.post("/", tokenExtractor, userExtractor, async (request, response) => {
     const { body: { title, author, url, likes }, user } = request;
 
     const blog = new Blog({
@@ -29,7 +30,7 @@ blogsRouter.get("/:id", async (request, response) => {
     response.json(blog);
 });
 
-blogsRouter.delete("/:id", async (request, response) => {
+blogsRouter.delete("/:id", tokenExtractor, userExtractor, async (request, response) => {
     const { token, user, params: { id } } = request;
     // eslint-disable-next-line no-undef
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
