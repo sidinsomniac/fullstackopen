@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Blog from './components/Blog';
+import BlogForm from "./components/BlogForm";
+import Bloglist from "./components/Bloglist";
+import LoginForm from "./components/LoginForm";
 import blogService from './services/blogs';
 import loginService from './services/login';
 
@@ -9,13 +11,15 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
+  const fetchBlogs = () => {
     blogService.getAll().then(blogs => {
       console.log(blogs);
       setBlogs(blogs);
     }
     );
-  }, []);
+  };
+
+  useEffect(fetchBlogs, []);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
@@ -46,50 +50,19 @@ const App = () => {
     setPassword('');
   };
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        <label>
-          Username
-            <input type="text"
-            value={username}
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Password
-            <input type="password"
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </label>
-      </div>
-      <button type="submit">Login</button>
-    </form>
-  );
-
-  const blogList = () => {
-    return (<>
-      <p>{user.name} has logged in <button onClick={handleLogout}>logout</button></p>
-
-      {
-        blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-        )
-      }
-    </>);
-  };
-
-
 
   return (
     <div>
       <h2>Blogs</h2>
 
-      {!user ? loginForm() : blogList()}
-
+      {
+        !user ?
+          <LoginForm username={username} password={password} handleLogin={handleLogin} setUsername={setUsername} setPassword={setPassword} />
+          : <>
+            <Bloglist blogs={blogs} user={user} handleLogout={handleLogout} />
+            <BlogForm fetchBlogs={fetchBlogs} />
+          </>
+      }
 
     </div>
   );
