@@ -37,6 +37,20 @@ const App = () => {
     );
   };
 
+  const postBlog = async newBlog => {
+    try {
+      const { title, author } = newBlog;
+      const response = await blogService.createBlog(newBlog);
+      getAndSetSuccess(`${title} by ${author} added`);
+      await fetchBlogs();
+      console.log(response);
+    } catch (exception) {
+      const { response } = exception;
+      getAndSetError(`${response.statusText}: ${response.data.error}`);
+      console.log(exception);
+    }
+  };
+
   useEffect(fetchBlogs, []);
 
   useEffect(() => {
@@ -88,7 +102,7 @@ const App = () => {
           <LoginForm username={username} password={password} handleLogin={handleLogin} setUsername={setUsername} setPassword={setPassword} />
           : <>
             <Bloglist blogs={blogs} user={user} handleLogout={handleLogout} />
-            <BlogForm setError={getAndSetError} setSuccess={getAndSetSuccess} fetchBlogs={fetchBlogs} />
+            <BlogForm postBlog={postBlog} />
           </>
       }
 
