@@ -51,6 +51,20 @@ const App = () => {
     }
   };
 
+  const updateBlog = async (updatedBlog, blogId) => {
+    try {
+      const { title, author } = updatedBlog;
+      const response = await blogService.updateBlog(blogId, updatedBlog);
+      getAndSetSuccess(`${title} by ${author} updated`);
+      await fetchBlogs();
+      console.log(response);
+    } catch (exception) {
+      const { response } = exception;
+      getAndSetError(`${response.statusText}: ${response.data.error}`);
+      console.log(exception);
+    }
+  };
+
   useEffect(fetchBlogs, []);
 
   useEffect(() => {
@@ -101,7 +115,7 @@ const App = () => {
         !user ?
           <LoginForm username={username} password={password} handleLogin={handleLogin} setUsername={setUsername} setPassword={setPassword} />
           : <>
-            <Bloglist blogs={blogs} user={user} handleLogout={handleLogout} />
+            <Bloglist updateBlog={updateBlog} blogs={blogs} user={user} handleLogout={handleLogout} />
             <BlogForm postBlog={postBlog} />
           </>
       }
