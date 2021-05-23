@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Togglable from "./Togglable";
 
 const BlogForm = ({ postBlog }) => {
@@ -6,8 +6,11 @@ const BlogForm = ({ postBlog }) => {
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
 
+  const blogFormRef = useRef();
+
   const addBlog = async event => {
     event.preventDefault();
+    blogFormRef.current.toggleVisibility();
     const newBlog = { title, author, url };
     await postBlog(newBlog);
     setTitle("");
@@ -16,7 +19,7 @@ const BlogForm = ({ postBlog }) => {
   };
 
   return (
-    <Togglable buttonLabel={"New Blog"}>
+    <Togglable buttonLabel={"New Blog"} ref={blogFormRef}>
       <form onSubmit={addBlog}>
         <div>
           <div>
