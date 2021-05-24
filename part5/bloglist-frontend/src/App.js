@@ -65,6 +65,18 @@ const App = () => {
     }
   };
 
+  const deleteBlog = async id => {
+    try {
+      await blogService.removeBlog(id);
+      getAndSetSuccess('Blog removed successfully!');
+      await fetchBlogs();
+    } catch (exception) {
+      const { response } = exception;
+      getAndSetError(`${response.statusText}: ${response.data.error}`);
+      console.log(exception);
+    }
+  };
+
   useEffect(fetchBlogs, []);
 
   useEffect(() => {
@@ -115,7 +127,7 @@ const App = () => {
         !user ?
           <LoginForm username={username} password={password} handleLogin={handleLogin} setUsername={setUsername} setPassword={setPassword} />
           : <>
-            <Bloglist updateBlog={updateBlog} blogs={blogs} user={user} handleLogout={handleLogout} />
+            <Bloglist updateBlog={updateBlog} deleteBlog={deleteBlog} blogs={blogs} user={user} handleLogout={handleLogout} />
             <BlogForm postBlog={postBlog} />
           </>
       }
