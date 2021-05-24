@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import BlogForm from "./components/BlogForm";
 import Bloglist from "./components/Bloglist";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
-import blogService from './services/blogs';
-import loginService from './services/login';
+import blogService from "./services/blogs";
+import loginService from "./services/login";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -68,7 +68,7 @@ const App = () => {
   const deleteBlog = async id => {
     try {
       await blogService.removeBlog(id);
-      getAndSetSuccess('Blog removed successfully!');
+      getAndSetSuccess("Blog removed successfully!");
       await fetchBlogs();
     } catch (exception) {
       const { response } = exception;
@@ -96,8 +96,8 @@ const App = () => {
       getAndSetSuccess(`Logged in ${currentUser.name} successfully`);
       blogService.setToken(currentUser.token);
       setUser(currentUser);
-      setUsername('');
-      setPassword('');
+      setUsername("");
+      setPassword("");
     } catch (exception) {
       const { response } = exception;
       getAndSetError(`${response.statusText}: ${response.data.error}`);
@@ -107,10 +107,10 @@ const App = () => {
   const handleLogout = () => {
     try {
       window.localStorage.removeItem("loggedBlogAppUser");
-      getAndSetSuccess(`Logged out successfully`);
+      getAndSetSuccess("Logged out successfully");
       setUser(null);
-      setUsername('');
-      setPassword('');
+      setUsername("");
+      setPassword("");
     } catch (exception) {
       getAndSetError("Some error occured in logging user out");
     }

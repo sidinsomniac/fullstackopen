@@ -18,7 +18,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "cd ../../part4/bloglist && npm run dev"
+    "server": "cd ../../part4/bloglist && npm run dev",
+    "lint": "eslint ."
   },
   "eslintConfig": {
     "extends": [
@@ -38,5 +39,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3003"
+  "proxy": "http://localhost:3003",
+  "devDependencies": {
+    "eslint-plugin-jest": "^24.3.6"
+  }
 }

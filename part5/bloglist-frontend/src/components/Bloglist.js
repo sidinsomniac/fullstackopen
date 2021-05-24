@@ -1,5 +1,5 @@
-import React from 'react';
-import Blog from './Blog';
+import React from "react";
+import Blog from "./Blog";
 
 const Bloglist = ({ user, blogs, handleLogout, updateBlog, deleteBlog }) => (
   <>
