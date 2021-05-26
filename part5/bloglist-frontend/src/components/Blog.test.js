@@ -5,7 +5,7 @@ import Blog from "./Blog";
 
 describe("<Blog/>", () => {
 
-    let component, blogContainer;
+    let component, blogContainer, deleteBlog, updateBlog, viewButton;
 
     beforeEach(() => {
         const user = {
@@ -24,14 +24,16 @@ describe("<Blog/>", () => {
         };
 
 
-        const deleteBlog = jest.fn();
-        const updateBlog = jest.fn();
+        deleteBlog = jest.fn();
+        updateBlog = jest.fn();
 
         component = render(
             <Blog deleteBlog={deleteBlog} updateBlog={updateBlog} user={user} key={blog.id} blog={blog} />
         );
 
         blogContainer = component.container.querySelector(".blog");
+        viewButton = component.container.querySelector(".toggle-button");
+
     });
 
     test("renders contracted blogs", () => {
@@ -42,9 +44,16 @@ describe("<Blog/>", () => {
     });
 
     test("show url and likes when expanded", () => {
-        const viewButton = component.container.querySelector(".toggle-button");
         fireEvent.click(viewButton);
         expect(blogContainer).toHaveTextContent("www.testurl.com");
         expect(blogContainer).toHaveTextContent(49);
+    });
+
+    test("updateBlog called twice if like button clicked twice", () => {
+        fireEvent.click(viewButton);
+        const likeButton = component.container.querySelector(".like-button");
+        fireEvent.click(likeButton);
+        fireEvent.click(likeButton);
+        expect(updateBlog.mock.calls).toHaveLength(2);
     });
 });
