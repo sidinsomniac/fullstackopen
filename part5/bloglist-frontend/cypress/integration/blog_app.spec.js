@@ -47,7 +47,7 @@ describe("Note app", function () {
             cy.createBlog({
                 title: "The road not taken",
                 author: "Robert Frost",
-                url: "Beautiful poems"
+                url: "www.beautifulpoems.com"
             });
             cy.visit("http://localhost:3000");
         });
@@ -64,12 +64,44 @@ describe("Note app", function () {
             cy.get(".blog").should("have.length", 2);
         });
 
-        it.only("can like a blog", () => {
+        it("can like a blog", () => {
             cy.contains("view").click();
             cy.contains("like").as("likeButton");
             cy.get("@likeButton").parent().contains("0");
             cy.get("@likeButton").click();
             cy.get("@likeButton").parent().contains("1");
+        });
+
+        it("logged in user can only delete own post", function () {
+            cy.contains("view").click();
+            cy.contains("remove").click();
+            cy.contains("Blog removed successfully!");
+            cy.get("html").should("not.contain", "The road not taken Robert Frost");
+        });
+
+        it.only("logged in user cannot delete others' post", function () {
+            cy.contains("logout").click();
+            const user = {
+                name: "Dan Brown",
+                username: "dan",
+                password: "angelsanddemons"
+            };
+            cy.request("POST", "http://localhost:3003/api/users/", user);
+
+            cy.login(user);
+            cy.createBlog({
+                title: "Angels and Demons",
+                author: "Dan Brown",
+                url: "www.robertlangdon.com"
+            });
+            cy.visit("http://localhost:3000");
+
+            cy.contains("view").eq(0).click();
+            cy.contains("remove").should("not.exist");
+            cy.contains("hide").click();
+
+            cy.get(".toggle-button").eq(1).click();
+            cy.contains("remove").should("exist");
         });
     });
 });
