@@ -27,6 +27,11 @@ app.use(middleware.defaultLikes);
 app.use("/api/blogs/", blogsRouter);
 app.use("/api/users/", usersRouter);
 app.use("/api/login/", loginRouter);
+// eslint-disable-next-line no-undef
+if (process.env.NODE_ENV === "test") {
+    const resetRouter = require("./controllers/reset");
+    app.use("/api/reset", resetRouter);
+}
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 
