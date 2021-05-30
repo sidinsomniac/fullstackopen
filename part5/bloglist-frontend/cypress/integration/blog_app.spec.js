@@ -41,7 +41,7 @@ describe("Note app", function () {
         });
     });
 
-    describe.only("When logged in", function () {
+    describe("When logged in", function () {
         beforeEach(function () {
             cy.login({ username: "sid", password: "qwerty1234" });
             cy.createBlog({
@@ -79,7 +79,7 @@ describe("Note app", function () {
             cy.get("html").should("not.contain", "The road not taken Robert Frost");
         });
 
-        it.only("logged in user cannot delete others' post", function () {
+        it("logged in user cannot delete others' post", function () {
             cy.contains("logout").click();
             const user = {
                 name: "Dan Brown",
@@ -102,6 +102,48 @@ describe("Note app", function () {
 
             cy.get(".toggle-button").eq(1).click();
             cy.contains("remove").should("exist");
+        });
+
+        it("blogs are arranged based on most likes", function () {
+            cy.createBlog({
+                title: "The grapes are sour",
+                author: "Lord Aesop",
+                url: "www.aesopsfables.com"
+            });
+            cy.createBlog({
+                title: "Angels and Demons",
+                author: "Dan Brown",
+                url: "www.robertlangdon.com"
+            });
+            cy.visit("http://localhost:3000");
+
+            cy.get(".toggle-button").eq(0).click();
+            for (let i = 0; i < 5; i++) {
+                cy.get(".like-button").eq(0).click();
+                cy.wait(1000);
+            }
+
+            cy.get(".toggle-button").eq(1).click();
+            for (let i = 0; i < 3; i++) {
+                cy.get(".like-button").eq(1).click();
+                cy.wait(1000);
+            }
+
+            cy.visit("http://localhost:3000");
+
+            cy.get(".toggle-button").then(buttons => {
+                for (let i = 0; i < 3; i++) {
+                    buttons[i].click();
+                }
+            });
+
+            cy.get(".likes").get("span").then(resp => {
+                const arr = [5, 3, 0];
+                for (let i = 0; i < resp.length; i++) {
+                    expect(+resp[i].innerHTML).to.eq(arr[i]);
+                }
+            });
+
         });
     });
 });
