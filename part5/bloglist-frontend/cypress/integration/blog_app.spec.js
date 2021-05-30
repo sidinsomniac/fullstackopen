@@ -49,6 +49,7 @@ describe("Note app", function () {
                 author: "Robert Frost",
                 url: "Beautiful poems"
             });
+            cy.visit("http://localhost:3000");
         });
 
         it("a blog can be created", function () {
@@ -61,6 +62,14 @@ describe("Note app", function () {
             cy.get("html").should("not.contain", "Bad Request");
             cy.get("html").should("not.have.class", "error");
             cy.get(".blog").should("have.length", 2);
+        });
+
+        it.only("can like a blog", () => {
+            cy.contains("view").click();
+            cy.contains("like").as("likeButton");
+            cy.get("@likeButton").parent().contains("0");
+            cy.get("@likeButton").click();
+            cy.get("@likeButton").parent().contains("1");
         });
     });
 });
