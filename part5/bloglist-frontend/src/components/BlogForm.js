@@ -20,7 +20,7 @@ const BlogForm = ({ postBlog }) => {
 
   return (
     <Togglable buttonLabel={"New Blog"} ref={blogFormRef}>
-      <form onSubmit={addBlog}>
+      <form id="blog-form" onSubmit={addBlog}>
         <div>
           <div>
             <label>

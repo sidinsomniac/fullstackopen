@@ -31,13 +31,36 @@ describe("Note app", function () {
             cy.contains("Siddhartha has logged in");
         });
 
-        it.only("fails with wrong credentials", function () {
+        it("fails with wrong credentials", function () {
             loginUser.password = "wrong";
             cy.get("#username").type(loginUser.username);
             cy.get("#password").type(loginUser.password);
             cy.get("#login-button").click();
             cy.get(".error").contains("Unauthorized: invalid username or password");
             cy.get("html").should("not.contain", "Logged in Siddhartha successfully");
+        });
+    });
+
+    describe.only("When logged in", function () {
+        beforeEach(function () {
+            cy.login({ username: "sid", password: "qwerty1234" });
+            cy.createBlog({
+                title: "The road not taken",
+                author: "Robert Frost",
+                url: "Beautiful poems"
+            });
+        });
+
+        it("a blog can be created", function () {
+            cy.contains("New Blog").click();
+            cy.get("#blog-title").type("How to steal a million");
+            cy.get("#blog-author").type("Tapan Mitra");
+            cy.get("#blog-url").type("www.tm.com");
+            cy.get("#blog-form").submit();
+            cy.get(".success").contains("How to steal a million by Tapan Mitra added");
+            cy.get("html").should("not.contain", "Bad Request");
+            cy.get("html").should("not.have.class", "error");
+            cy.get(".blog").should("have.length", 2);
         });
     });
 });
