@@ -15,7 +15,6 @@ const anecdoteReducer = (state = initialAnecdoteState, action) => {
       return updatedState.sort((a, b) => b.votes - a.votes);
     case "NEW_ANECDOTE":
       const newAnecdote = action.data;
-      console.log({ state }, newAnecdote);
       return [...state, newAnecdote];
     default:
       return [...state];

@@ -4,7 +4,7 @@ import { increaseVoteOf } from "../reducers/anecdoteReducer";
 import { hideNotification, showNotification } from "../reducers/notificationReducer";
 
 const AnecdoteList = () => {
-    const anecdotes = useSelector(state => state.anecdotes);
+    const anecdotes = useSelector(({ anecdotes, filterAnecdotes }) => anecdotes.filter(anecdote => anecdote.content.trim().toLowerCase().includes(filterAnecdotes.trim().toLowerCase())));
     const dispatch = useDispatch();
 
 
@@ -14,7 +14,6 @@ const AnecdoteList = () => {
         setTimeout(() => {
             dispatch(hideNotification());
         }, 5000);
-        console.log('vote', id);
     };
 
     return (
