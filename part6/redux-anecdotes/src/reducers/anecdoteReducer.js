@@ -1,5 +1,4 @@
-// import { initialAnecdoteState } from '../store';
-import { asObject } from '../utils/store-helper';
+import anecdoteServices from "../services/anecdotes";
 
 const anecdoteReducer = (state = [], action) => {
 
@@ -23,24 +22,33 @@ const anecdoteReducer = (state = [], action) => {
   }
 };
 
-export const createNewAnecdote = anecdote => {
-  return {
-    type: 'NEW_ANECDOTE',
-    data: anecdote
+export const createNewAnecdote = content => {
+  return async dispatch => {
+    const anecdote = await anecdoteServices.createAnecdote(content);
+    dispatch({
+      type: 'NEW_ANECDOTE',
+      data: anecdote
+    });
   };
 };
 
-export const increaseVoteOf = id => {
-  return {
-    type: 'VOTE',
-    data: { id }
+export const increaseVoteOf = anecdote => {
+  return async dispatch => {
+    const response = await anecdoteServices.updateAnecdote(anecdote);
+    dispatch({
+      type: 'VOTE',
+      data: { id: response.id }
+    });
   };
 };
 
-export const initializeAnecdotes = anecdotes => {
-  return {
-    type: 'INIT_ANECDOTES',
-    data: anecdotes
+export const initializeAnecdotes = () => {
+  return async dispatch => {
+    const anecdotes = await anecdoteServices.getAll();
+    dispatch({
+      type: 'INIT_ANECDOTES',
+      data: anecdotes
+    });
   };
 };
 
