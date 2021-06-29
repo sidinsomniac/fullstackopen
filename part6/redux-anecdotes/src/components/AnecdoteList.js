@@ -7,13 +7,10 @@ const AnecdoteList = () => {
     const anecdotes = useSelector(({ anecdotes, filteredAnecdotes }) => anecdotes.filter(anecdote => anecdote.content.trim().toLowerCase().includes(filteredAnecdotes.trim().toLowerCase())));
     const dispatch = useDispatch();
 
-
     const vote = ({ id, content }) => {
         dispatch(increaseVoteOf(id));
         dispatch(showNotification(`you voted '${content}'`));
-        setTimeout(() => {
-            dispatch(hideNotification());
-        }, 5000);
+        dispatch(hideNotification(3000));
     };
 
     return (
