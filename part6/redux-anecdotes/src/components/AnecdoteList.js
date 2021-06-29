@@ -1,18 +1,19 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { increaseVoteOf } from "../reducers/anecdoteReducer";
-import { setNotification } from "../reducers/notificationReducer";
-import anecdoteServices from "../services/anecdotes";
+import { hideNotification, showNotification } from "../reducers/notificationReducer";
 
 const AnecdoteList = () => {
-    const anecdotes = useSelector(({ anecdotes, filterAnecdotes }) => anecdotes.filter(anecdote => anecdote.content.trim().toLowerCase().includes(filterAnecdotes.trim().toLowerCase())));
+    const anecdotes = useSelector(({ anecdotes, filteredAnecdotes }) => anecdotes.filter(anecdote => anecdote.content.trim().toLowerCase().includes(filteredAnecdotes.trim().toLowerCase())));
     const dispatch = useDispatch();
 
 
-    const vote = anecdote => {
-        anecdoteServices.updateAnecdote(anecdote);
-        dispatch(increaseVoteOf(anecdote));
-        dispatch(setNotification(`you voted '${anecdote.content}'`, 5000));
+    const vote = ({ id, content }) => {
+        dispatch(increaseVoteOf(id));
+        dispatch(showNotification(`you voted '${content}'`));
+        setTimeout(() => {
+            dispatch(hideNotification());
+        }, 5000);
     };
 
     return (

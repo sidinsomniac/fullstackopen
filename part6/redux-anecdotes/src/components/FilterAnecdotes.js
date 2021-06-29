@@ -1,20 +1,26 @@
 import React from 'react';
-import { useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { filterAnecdotes } from "../reducers/filterReducer";
 
-const FilterAnecdotes = () => {
-    const filter = useSelector(state => state.filterAnecdotes);
-    const dispatch = useDispatch();
+const FilterAnecdotes = ({ filterAnecdotes, filteredAnecdotes }) => {
     const dispatchFilter = e => {
-        dispatch(filterAnecdotes(e.target.value));
+        filterAnecdotes(e.target.value);
     };
 
     return <div>
         <label>
             filter
-            <input type='text' value={filter} onChange={dispatchFilter} placeholder='filter' />
+            <input type='text' value={filteredAnecdotes} onChange={dispatchFilter} placeholder='filter' />
         </label>
     </div>;
 };
 
-export default FilterAnecdotes;
+const mapStateToProps = state => {
+    return {
+        filteredAnecdotes: state.filteredAnecdotes
+    };
+}
+
+const mapDispatchToProps = { filterAnecdotes }
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterAnecdotes);

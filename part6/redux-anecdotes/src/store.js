@@ -1,11 +1,4 @@
 import { asObject } from "./utils/store-helper";
-import { combineReducers, createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import anecdoteReducer from './reducers/anecdoteReducer';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import notificationReducer from "./reducers/notificationReducer";
-import filterReducer from "./reducers/filterReducer";
-
 
 const anecdotesAtStart = [
     'If it hurts, do it more often',
@@ -19,12 +12,3 @@ const anecdotesAtStart = [
 export const initialNotificationState = "";
 
 export const initialAnecdoteState = anecdotesAtStart.map(asObject);
-
-const reducer = combineReducers({
-    anecdotes: anecdoteReducer,
-    notification: notificationReducer,
-    filterAnecdotes: filterReducer
-});
-
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
-export default store;
