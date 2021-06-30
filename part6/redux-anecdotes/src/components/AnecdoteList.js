@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { increaseVoteOf } from "../reducers/anecdoteReducer";
 import { hideNotification, showNotification } from "../reducers/notificationReducer";
@@ -6,11 +6,21 @@ import { hideNotification, showNotification } from "../reducers/notificationRedu
 const AnecdoteList = () => {
     const anecdotes = useSelector(({ anecdotes, filteredAnecdotes }) => anecdotes.filter(anecdote => anecdote.content.trim().toLowerCase().includes(filteredAnecdotes.trim().toLowerCase())));
     const dispatch = useDispatch();
+    const [timer, setTimer] = useState('');
+
+    useEffect(() => {
+        return () => {
+            clearTimeout(timer);
+        };
+    });
 
     const vote = ({ id, content }) => {
         dispatch(increaseVoteOf(id));
         dispatch(showNotification(`you voted '${content}'`));
-        dispatch(hideNotification(3000));
+        let timeoutTimer = setTimeout(() => {
+            dispatch(hideNotification());
+        }, 3000);
+        setTimer(timeoutTimer);
     };
 
     return (

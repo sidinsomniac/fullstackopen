@@ -18,13 +18,9 @@ export const showNotification = message => {
     };
 };
 
-export const hideNotification = timeout => {
-    return dispatch => {
-        setTimeout(() => {
-            dispatch({
-                type: 'HIDE_NOTIFICATION'
-            });
-        }, timeout);
+export const hideNotification = () => {
+    return {
+        type: 'HIDE_NOTIFICATION'
     };
 };
 

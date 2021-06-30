@@ -7,10 +7,10 @@ const Notification = ({ notification }) => {
     padding: 10,
     borderWidth: 1
   };
-  return notification &&
-    (<div style={style}>
-      {notification}
-    </div>);
+
+  return (<div style={style}>
+    {notification}
+  </div>);
 };
 
 const mapStateToProps = state => {
