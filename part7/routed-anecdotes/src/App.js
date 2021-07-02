@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Switch, Route, Link, useParams, useRouteMatch } from 'react-router-dom';
+import { Switch, Route, Link, useRouteMatch, useHistory } from 'react-router-dom';
 
 const Menu = () => {
   const padding = {
@@ -57,6 +57,14 @@ const CreateNew = (props) => {
   const [author, setAuthor] = useState('');
   const [info, setInfo] = useState('');
 
+  const history = useHistory();
+
+  const triggerToaster = (text) => {
+    props.setNotification(text);
+    setTimeout(() => {
+      props.setNotification("");
+    }, 10000);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -66,6 +74,8 @@ const CreateNew = (props) => {
       info,
       votes: 0
     });
+    history.push('/');
+    triggerToaster(`a new anecdote ${content} created!`);
   };
 
   return (
@@ -109,7 +119,7 @@ const App = () => {
     }
   ]);
 
-  // const [notification, setNotification] = useState('')
+  const [notification, setNotification] = useState('');
 
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0);
@@ -117,18 +127,18 @@ const App = () => {
   };
 
   // const anecdoteById = (id) =>
-  //   anecdotes.find(a => a.id === id)
+  //   anecdotes.find(a => a.id === id);
 
   // const vote = (id) => {
-  //   const anecdote = anecdoteById(id)
+  //   const anecdote = anecdoteById(id);
 
   //   const voted = {
   //     ...anecdote,
   //     votes: anecdote.votes + 1
-  //   }
+  //   };
 
-  //   setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
-  // }
+  //   setAnecdotes(anecdotes.map(a => a.id === id ? voted : a));
+  // };
 
   const match = useRouteMatch('/anecdotes/:id');
   const anecdote = match ? anecdotes.find(anecdote => anecdote.id === match.params.id) : null;
@@ -137,12 +147,13 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      <p>{notification && notification}</p>
       <Switch>
         <Route path='/about'>
           <About />
         </Route>
         <Route path='/create'>
-          <CreateNew addNew={addNew} />
+          <CreateNew setNotification={setNotification} addNew={addNew} />
         </Route>
         <Route path='/anecdotes/:id'>
           {anecdote && <Anecdote anecdote={anecdote} />}
