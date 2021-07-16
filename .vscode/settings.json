@@ -3,6 +3,9 @@
     "part0": true,
     "part1": true,
     "part2": true,
-    "part4": false
+    "part4": true,
+    "part5": true,
+    "part6": true,
+    "part7": false
   }
 }
