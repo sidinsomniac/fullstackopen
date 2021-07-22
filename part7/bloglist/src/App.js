@@ -7,22 +7,19 @@ import blogService from "./services/blogs";
 import loginService from "./services/login";
 import { useSelector, useDispatch } from "react-redux";
 import { clearMessage, getAndSetError, getAndSetSuccess } from "./reducers/notificationReducers";
+import { fetchAndSetBlogs } from "./reducers/blogsReducer";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
 
-  const notification = useSelector(state => state.notification);
   const dispatch = useDispatch();
+  const blogs = useSelector(state => state.blogs);
+  const notification = useSelector(state => state.notification);
 
   const fetchBlogs = () => {
-    blogService.getAll().then(blogs => {
-      console.log(blogs);
-      setBlogs(blogs);
-    }
-    );
+    dispatch(fetchAndSetBlogs());
   };
 
   const postBlog = async newBlog => {
