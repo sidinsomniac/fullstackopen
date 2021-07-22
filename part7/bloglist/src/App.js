@@ -8,13 +8,14 @@ import loginService from "./services/login";
 import { useSelector, useDispatch } from "react-redux";
 import { clearMessage, getAndSetError, getAndSetSuccess } from "./reducers/notificationReducers";
 import { fetchAndSetBlogs } from "./reducers/blogsReducer";
+import { removeUser, setUser } from "./reducers/userReducer";
 
 const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
 
   const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
   const blogs = useSelector(state => state.blogs);
   const notification = useSelector(state => state.notification);
 
@@ -68,7 +69,7 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      setUser(user);
+      dispatch(setUser(user));
       blogService.setToken(user.token);
     }
   }, []);
@@ -80,7 +81,7 @@ const App = () => {
       window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(currentUser));
       showNotification("SUCCESS", `Logged in ${currentUser.name} successfully`);
       blogService.setToken(currentUser.token);
-      setUser(currentUser);
+      dispatch(setUser(currentUser));
       setUsername("");
       setPassword("");
     } catch (exception) {
@@ -93,7 +94,7 @@ const App = () => {
     try {
       window.localStorage.removeItem("loggedBlogAppUser");
       showNotification("SUCCESS", "Logged out successfully");
-      setUser(null);
+      dispatch(removeUser());
       setUsername("");
       setPassword("");
     } catch (exception) {
