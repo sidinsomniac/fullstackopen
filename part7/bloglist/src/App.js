@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import BlogForm from "./components/BlogForm";
 import Bloglist from "./components/Bloglist";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
-import { useSelector, useDispatch } from "react-redux";
-import { clearMessage, getAndSetError, getAndSetSuccess } from "./reducers/notificationReducers";
 import { fetchAndSetBlogs } from "./reducers/blogsReducer";
 import { removeUser, setUser } from "./reducers/userReducer";
+import { clearMessage, getAndSetError, getAndSetSuccess } from "./reducers/notificationReducers";
+import UserDetails from "./components/UserDetails";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -112,21 +114,34 @@ const App = () => {
 
 
   return (
-    <div>
-      {notification.successMessage && <Notification message={notification.successMessage} typeOfClass={"success"} />}
-      {notification.errorMessage && <Notification message={notification.errorMessage} typeOfClass={"error"} />}
-      <h2>Blogs</h2>
+    <BrowserRouter>
+      <div>
+        {notification.successMessage && <Notification message={notification.successMessage} typeOfClass={"success"} />}
+        {notification.errorMessage && <Notification message={notification.errorMessage} typeOfClass={"error"} />}
+        <h2>Blogs</h2>
 
-      {
-        !user ?
-          <LoginForm username={username} password={password} handleLogin={handleLogin} setUsername={setUsername} setPassword={setPassword} />
-          : <>
-            <Bloglist updateBlog={updateBlog} deleteBlog={deleteBlog} blogs={blogs} user={user} handleLogout={handleLogout} />
-            <BlogForm postBlog={postBlog} />
-          </>
-      }
+        <Switch>
+          {
+            !user ?
+              <LoginForm username={username} password={password} handleLogin={handleLogin} setUsername={setUsername} setPassword={setPassword} />
+              : <>
+                <p>{user.name} has logged in <button onClick={handleLogout}>logout</button></p>
+                <Route path="/users">
+                  < UserDetails />
+                </Route>
+                <Route exact path="/">
+                  <Bloglist updateBlog={updateBlog} deleteBlog={deleteBlog} blogs={blogs} user={user} />
+                  <BlogForm postBlog={postBlog} />
+                </Route>
+              </>
+          }
 
-    </div>
+
+        </Switch>
+
+
+      </div>
+    </BrowserRouter>
   );
 };
 
