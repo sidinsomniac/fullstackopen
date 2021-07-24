@@ -9,6 +9,7 @@ import UsersList from "./components/UsersList";
 import UserDetails from "./components/UserDetails";
 import Notification from "./components/Notification";
 import NavigationBar from "./components/NavigationBar";
+import { Container } from "react-bootstrap";
 import blogService from "./services/blogs";
 import commentService from "./services/comment";
 import loginService from "./services/login";
@@ -131,11 +132,10 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <div>
-        {notification.successMessage && <Notification message={notification.successMessage} typeOfClass={"success"} />}
-        {notification.errorMessage && <Notification message={notification.errorMessage} typeOfClass={"error"} />}
-        {user && <NavigationBar user={user} handleLogout={handleLogout} />}
-        <h2>Blogs</h2>
+      {notification.successMessage && <Notification message={notification.successMessage} variant={"success"} />}
+      {notification.errorMessage && <Notification message={notification.errorMessage} variant={"danger"} />}
+      {user && <NavigationBar user={user} handleLogout={handleLogout} />}
+      <Container>
         {
           !user ?
             <LoginForm username={username} password={password} handleLogin={handleLogin} setUsername={setUsername} setPassword={setPassword} />
@@ -158,7 +158,7 @@ const App = () => {
               </Switch>
             </>
         }
-      </div>
+      </Container>
     </BrowserRouter>
   );
 };

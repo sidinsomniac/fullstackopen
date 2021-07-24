@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUsers } from "../reducers/usersReducer";
 import { Link } from "react-router-dom";
+import { Table } from "react-bootstrap";
 
 function UsersList() {
     const users = useSelector(state => state.users);
@@ -14,7 +15,7 @@ function UsersList() {
     return (
         <div>
             <h2>Users</h2>
-            <table>
+            <Table responsive="sm">
                 <thead>
                     <tr>
                         <th></th>
@@ -35,7 +36,7 @@ function UsersList() {
                         );
                     })}
                 </tbody>
-            </table>
+            </Table>
         </div>
     );
 }

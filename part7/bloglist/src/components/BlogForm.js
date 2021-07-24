@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import Togglable from "./Togglable";
+import { Form, Button } from "react-bootstrap";
 
 const BlogForm = ({ postBlog }) => {
   const [title, setTitle] = useState("");
@@ -20,38 +21,35 @@ const BlogForm = ({ postBlog }) => {
 
   return (
     <Togglable buttonLabel={"New Blog"} ref={blogFormRef}>
-      <form id="blog-form" onSubmit={addBlog}>
-        <div>
-          <div>
-            <label>
-              Title
-              <input type="text" id="blog-title"
-                value={title}
-                onChange={({ target }) => setTitle(target.value)}
-              />
-            </label>
-          </div>
-          <div>
-            <label>
-              Author
-              <input type="text" id="blog-author"
-                value={author}
-                onChange={({ target }) => setAuthor(target.value)}
-              />
-            </label>
-          </div>
-          <div>
-            <label>
-              Url
-              <input type="text" id="blog-url"
-                value={url}
-                onChange={({ target }) => setUrl(target.value)}
-              />
-            </label>
-          </div>
-        </div>
-        <button type="submit">Create</button>
-      </form>
+      <Form id="blog-form" onSubmit={addBlog}>
+        <Form.Group>
+          <Form.Label>
+            Title
+          </Form.Label>
+          <Form.Control type="text" id="blog-title"
+            value={title}
+            onChange={({ target }) => setTitle(target.value)} />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>
+            Author
+          </Form.Label>
+          <Form.Control type="text" id="blog-author"
+            value={author}
+            onChange={({ target }) => setAuthor(target.value)} />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>
+            Url
+          </Form.Label>
+          <Form.Control type="text" id="blog-url"
+            value={url}
+            onChange={({ target }) => setUrl(target.value)} />
+        </Form.Group>
+        <Button variant="outline-success" type="submit">
+          Create
+        </Button>
+      </Form>
     </Togglable>
   );
 };

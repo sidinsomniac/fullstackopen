@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import Togglable from "./Togglable";
+import { Button } from "react-bootstrap";
 
 const CommentForm = ({ blogId, postComment }) => {
 
@@ -32,7 +33,7 @@ const CommentForm = ({ blogId, postComment }) => {
             </label>
           </div>
         </div>
-        <button type="submit">add comment</button>
+        <Button variant="info" type="submit">Add Comment</Button>
       </form>
     </Togglable>
   );

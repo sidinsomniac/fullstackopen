@@ -1,15 +1,15 @@
 import React from "react";
-import "../App.css";
+import { Alert } from "react-bootstrap";
 
-const Notification = ({ message, typeOfClass }) => {
+const Notification = ({ message, variant }) => {
   if (message === null) {
     return null;
   }
 
   return (
-    <div className={typeOfClass}>
+    <Alert variant={variant}>
       {message}
-    </div>
+    </Alert>
   );
 };
 
