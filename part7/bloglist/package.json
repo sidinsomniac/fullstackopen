@@ -19,8 +19,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "cd ../../part4/bloglist && npm run dev",
-    "server:test": "cd ../../part4/bloglist && npm run start:test",
+    "server": "cd ./server && npm run dev",
+    "server:test": "cd ./server && npm run start:test",
     "lint": "eslint .",
     "cypress:open": "cypress open"
   },
