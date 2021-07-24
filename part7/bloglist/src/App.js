@@ -10,6 +10,7 @@ import loginService from "./services/login";
 import { fetchAndSetBlogs } from "./reducers/blogsReducer";
 import { removeUser, setUser } from "./reducers/userReducer";
 import { clearMessage, getAndSetError, getAndSetSuccess } from "./reducers/notificationReducers";
+import UsersList from "./components/UsersList";
 import UserDetails from "./components/UserDetails";
 
 const App = () => {
@@ -119,27 +120,26 @@ const App = () => {
         {notification.successMessage && <Notification message={notification.successMessage} typeOfClass={"success"} />}
         {notification.errorMessage && <Notification message={notification.errorMessage} typeOfClass={"error"} />}
         <h2>Blogs</h2>
-
-        <Switch>
-          {
-            !user ?
-              <LoginForm username={username} password={password} handleLogin={handleLogin} setUsername={setUsername} setPassword={setPassword} />
-              : <>
-                <p>{user.name} has logged in <button onClick={handleLogout}>logout</button></p>
-                <Route path="/users">
+        {
+          !user ?
+            <LoginForm username={username} password={password} handleLogin={handleLogin} setUsername={setUsername} setPassword={setPassword} />
+            :
+            <>
+              <p>{user.name} has logged in <button onClick={handleLogout}>logout</button></p>
+              <Switch>
+                <Route path="/users/:id">
                   < UserDetails />
                 </Route>
-                <Route exact path="/">
+                <Route path="/users">
+                  < UsersList />
+                </Route>
+                <Route path="/">
                   <Bloglist updateBlog={updateBlog} deleteBlog={deleteBlog} blogs={blogs} user={user} />
                   <BlogForm postBlog={postBlog} />
                 </Route>
-              </>
-          }
-
-
-        </Switch>
-
-
+              </Switch>
+            </>
+        }
       </div>
     </BrowserRouter>
   );

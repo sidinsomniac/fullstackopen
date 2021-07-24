@@ -1,35 +1,20 @@
-import React, { useEffect, useState } from "react";
-import userServices from "../services/users";
+import React from "react";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function UserDetails() {
-    const [users, setUsers] = useState([]);
-
-    useEffect(async () => {
-        const blogUsers = await userServices.getAll();
-        console.log("Users 😅❤😁", blogUsers);
-        setUsers(blogUsers);
-    }, []);
+    const id = useParams().id;
+    const user = useSelector(state => state.users.find(user => user.id === id));
+    if (!user) return null;
     return (
         <div>
-            <h2>Users</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>blogs created</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map(user => {
-                        return (
-                            <tr key={user.id}>
-                                <td>{user.name}</td>
-                                <td>{user.blogs.length}</td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
+            <h2>{user.name}</h2>
+            <h3>added blogs</h3>
+            <ul>
+                {user.blogs.map(blog => <li key={blog.id}>
+                    {blog.title}
+                </li>)}
+            </ul>
         </div>
     );
 }
