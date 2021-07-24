@@ -4,14 +4,15 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import BlogForm from "./components/BlogForm";
 import Bloglist from "./components/Bloglist";
 import LoginForm from "./components/LoginForm";
+import UsersList from "./components/UsersList";
+import UserDetails from "./components/UserDetails";
+import Blog from "./components/Blog";
 import Notification from "./components/Notification";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import { fetchAndSetBlogs } from "./reducers/blogsReducer";
 import { removeUser, setUser } from "./reducers/userReducer";
 import { clearMessage, getAndSetError, getAndSetSuccess } from "./reducers/notificationReducers";
-import UsersList from "./components/UsersList";
-import UserDetails from "./components/UserDetails";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -133,8 +134,11 @@ const App = () => {
                 <Route path="/users">
                   < UsersList />
                 </Route>
+                <Route path="/blogs/:id">
+                  <Blog updateBlog={updateBlog} deleteBlog={deleteBlog} />
+                </Route>
                 <Route path="/">
-                  <Bloglist updateBlog={updateBlog} deleteBlog={deleteBlog} blogs={blogs} user={user} />
+                  <Bloglist blogs={blogs} />
                   <BlogForm postBlog={postBlog} />
                 </Route>
               </Switch>
