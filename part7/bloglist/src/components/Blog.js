@@ -1,9 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
+import CommentForm from "./CommentForm";
 
 
-const Blog = ({ updateBlog, deleteBlog }) => {
+const Blog = ({ updateBlog, deleteBlog, postComment }) => {
 
 
   const id = useParams().id;
@@ -44,6 +45,7 @@ const Blog = ({ updateBlog, deleteBlog }) => {
       </div>
       <div>
         <h3>comments</h3>
+        <CommentForm blogId={blog.id} postComment={postComment} />
         <ul>
           {blog.comments.map(comment => <li key={comment.id}>{comment.text}</li>)}
         </ul>

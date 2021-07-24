@@ -10,6 +10,7 @@ import UserDetails from "./components/UserDetails";
 import Notification from "./components/Notification";
 import NavigationBar from "./components/NavigationBar";
 import blogService from "./services/blogs";
+import commentService from "./services/comment";
 import loginService from "./services/login";
 import { fetchAndSetBlogs } from "./reducers/blogsReducer";
 import { removeUser, setUser } from "./reducers/userReducer";
@@ -35,6 +36,18 @@ const App = () => {
       showNotification("SUCCESS", `${title} by ${author} added`);
       await fetchBlogs();
       console.log(response);
+    } catch (exception) {
+      const { response } = exception;
+      showNotification("FAILURE", `${response.statusText}: ${response.data.error}`);
+      console.log(exception);
+    }
+  };
+
+  const postComment = async (id, comment) => {
+    try {
+      await commentService.createComment(id, comment);
+      showNotification("SUCCESS", "Comment added successfully");
+      await fetchBlogs();
     } catch (exception) {
       const { response } = exception;
       showNotification("FAILURE", `${response.statusText}: ${response.data.error}`);
@@ -136,7 +149,7 @@ const App = () => {
                   < UsersList />
                 </Route>
                 <Route path="/blogs/:id">
-                  <Blog updateBlog={updateBlog} deleteBlog={deleteBlog} />
+                  <Blog updateBlog={updateBlog} deleteBlog={deleteBlog} postComment={postComment} />
                 </Route>
                 <Route path="/">
                   <Bloglist blogs={blogs} />
