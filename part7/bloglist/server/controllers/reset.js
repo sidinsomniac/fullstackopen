@@ -1,5 +1,3 @@
-const blog = require("../models/blog");
-
 const resetRouter = require("express").Router();
 const Blog = require("../models/blog");
 const User = require("../models/user");

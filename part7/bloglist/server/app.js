@@ -9,6 +9,7 @@ const middleware = require("./utils/middleware");
 const blogsRouter = require("./controllers/blogs");
 const usersRouter = require("./controllers/users");
 const loginRouter = require("./controllers/login");
+const commentsRouter = require("./controllers/comment");
 
 const mongoUrl = config.MONGODB_URI;
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
@@ -25,6 +26,7 @@ app.use(express.static("build"));
 app.use(middleware.requestLogger);
 app.use(middleware.defaultLikes);
 app.use("/api/blogs/", blogsRouter);
+app.use("/api/blogs/", commentsRouter);
 app.use("/api/users/", usersRouter);
 app.use("/api/login/", loginRouter);
 // eslint-disable-next-line no-undef
