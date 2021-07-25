@@ -43,14 +43,13 @@ const Blog = ({ updateBlog, deleteBlog, postComment }) => {
         <Card.Body>
           <Row>
             <Col>
-              <h1>{blog.title}</h1>
+              <h1>{blog.title} {user.username === blog.user.username && <Button onClick={removeBlog} variant="outline-danger"><MdDeleteForever /></Button>}</h1>
               <a href={"http://" + blog.url} target="_blank" rel="noopener noreferrer">{blog.url}</a>
               <p className="likes">
-                <Button onClick={updateLikes} variant="primary" className="like-button"><BiLike /></Button>{" "}
+                <Button onClick={updateLikes} variant="outline-primary" className="like-button"><BiLike /></Button>{" "}
                 <span>{blog.likes}</span>
               </p>
-              <p>added by {blog.user.name}</p>
-              {user.username === blog.user.username && <button onClick={removeBlog}><MdDeleteForever /></button>}
+              <em className="text-muted">added by {blog.user.name}</em>
             </Col>
             <Col>
               <h3>Comments</h3>
