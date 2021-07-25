@@ -140,23 +140,21 @@ const App = () => {
           !user ?
             <LoginForm username={username} password={password} handleLogin={handleLogin} setUsername={setUsername} setPassword={setPassword} />
             :
-            <>
-              <Switch>
-                <Route path="/users/:id">
-                  < UserDetails />
-                </Route>
-                <Route path="/users">
-                  < UsersList />
-                </Route>
-                <Route path="/blogs/:id">
-                  <Blog updateBlog={updateBlog} deleteBlog={deleteBlog} postComment={postComment} />
-                </Route>
-                <Route path="/">
-                  <Bloglist blogs={blogs} />
-                  <BlogForm postBlog={postBlog} />
-                </Route>
-              </Switch>
-            </>
+            <Switch>
+              <Route path="/users/:id">
+                < UserDetails />
+              </Route>
+              <Route path="/users">
+                < UsersList />
+              </Route>
+              <Route path="/blogs/:id">
+                <Blog updateBlog={updateBlog} deleteBlog={deleteBlog} postComment={postComment} />
+              </Route>
+              <Route path="/">
+                <Bloglist blogs={blogs} />
+                <BlogForm postBlog={postBlog} />
+              </Route>
+            </Switch>
         }
       </Container>
     </BrowserRouter>

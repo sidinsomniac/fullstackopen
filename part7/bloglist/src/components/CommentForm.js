@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import Togglable from "./Togglable";
 import { Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import { BiCommentDetail } from "react-icons/bi";
 
 const CommentForm = ({ blogId, postComment }) => {
 
@@ -21,20 +23,15 @@ const CommentForm = ({ blogId, postComment }) => {
 
   return (
     <Togglable buttonLabel={"add comment"} ref={blogFormRef}>
-      <form id="blog-form" onSubmit={addComment}>
-        <div>
-          <div>
-            <label>
-              Title
-              <input type="text" id="blog-title"
-                value={comment}
-                onChange={({ target }) => setComment(target.value)}
-              />
-            </label>
-          </div>
-        </div>
-        <Button variant="info" type="submit">Add Comment</Button>
-      </form>
+      <Form id="blog-form" onSubmit={addComment}>
+        <Form.Group className="mb-3">
+          <Form.Control as="textarea" rows={3} id="blog-title"
+            value={comment}
+            onChange={({ target }) => setComment(target.value)} />
+        </Form.Group>
+        <Button variant="info" type="submit">Comment <BiCommentDetail />
+        </Button>
+      </Form>
     </Togglable>
   );
 };

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Navbar, Container, Nav, Button } from "react-bootstrap";
+import { MdAccountCircle } from "react-icons/md";
 import "../styles/NavigationBar.css";
 
 export default function NavigationBar({ user, handleLogout }) {
@@ -15,7 +16,7 @@ export default function NavigationBar({ user, handleLogout }) {
                         <Nav.Link as={NavLink} to="/users">Users</Nav.Link>
                         <Nav.Item className="ml-auto">
                             <Navbar.Text>
-                                {user.name} has logged in {"  "}
+                                <MdAccountCircle />{user.name} has logged in {"  "}
                                 <Button variant="primary" onClick={handleLogout}>Logout</Button>
                             </Navbar.Text>
                         </Nav.Item>

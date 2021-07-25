@@ -2,6 +2,9 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import CommentForm from "./CommentForm";
+import { Card, Container, Row, Col, Button } from "react-bootstrap";
+import { MdDeleteForever } from "react-icons/md";
+import { BiLike } from "react-icons/bi";
 
 
 const Blog = ({ updateBlog, deleteBlog, postComment }) => {
@@ -35,22 +38,37 @@ const Blog = ({ updateBlog, deleteBlog, postComment }) => {
   console.log(blog);
 
   return (
-    <div className="blog">
-      <div>
-        <h1>{blog.title}</h1>
-        <a href={"http://" + blog.url} target="_blank" rel="noopener noreferrer">{blog.url}</a>
-        <p className="likes"><span>{blog.likes}</span> <button onClick={updateLikes} className="like-button">like</button></p>
-        <p>added by {blog.user.name}</p>
-        {user.username === blog.user.username && <button onClick={removeBlog}>remove</button>}
-      </div>
-      <div>
-        <h3>comments</h3>
-        <CommentForm blogId={blog.id} postComment={postComment} />
-        <ul>
-          {blog.comments.map(comment => <li key={comment.id}>{comment.text}</li>)}
-        </ul>
-      </div>
-    </div>
+    <Container>
+      <Card className="blog mt-5">
+        <Card.Body>
+          <Row>
+            <Col>
+              <h1>{blog.title}</h1>
+              <a href={"http://" + blog.url} target="_blank" rel="noopener noreferrer">{blog.url}</a>
+              <p className="likes">
+                <Button onClick={updateLikes} variant="primary" className="like-button"><BiLike /></Button>{" "}
+                <span>{blog.likes}</span>
+              </p>
+              <p>added by {blog.user.name}</p>
+              {user.username === blog.user.username && <button onClick={removeBlog}><MdDeleteForever /></button>}
+            </Col>
+            <Col>
+              <h3>Comments</h3>
+              <CommentForm blogId={blog.id} postComment={postComment} />
+              <Card className="mt-3 p-3">
+                {blog.comments.map(comment => {
+                  return (
+                    <Card key={comment.id} className="mb-3">
+                      <Card.Body>{comment.text}</Card.Body>
+                    </Card>
+                  );
+                })}
+              </Card>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 

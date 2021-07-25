@@ -46,8 +46,8 @@ const BlogForm = ({ postBlog }) => {
             value={url}
             onChange={({ target }) => setUrl(target.value)} />
         </Form.Group>
-        <Button variant="outline-success" type="submit">
-          Create
+        <Button variant="success" type="submit">
+          Create Blog
         </Button>
       </Form>
     </Togglable>
