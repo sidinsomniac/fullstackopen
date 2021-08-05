@@ -1,20 +1,12 @@
 import { useQuery } from "@apollo/client";
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ALL_BOOKS } from "../queries";
 
-const Books = ({ show, setBooks }) => {
+const Books = ({ show }) => {
 
   const result = useQuery(ALL_BOOKS);
   const [genre, setGenre] = useState('all genres');
   const genres = ["refactoring", "agile", "patterns", "design", "crime", "classic", "all genres"];
-
-  useEffect(() => {
-    if (result.data && result.data.allBooks) {
-      console.log(result.data.allBooks);
-      setBooks(result.data.allBooks);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [result.data]);
 
   if (!show) {
     return null;

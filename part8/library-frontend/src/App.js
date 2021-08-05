@@ -11,7 +11,6 @@ const App = () => {
   const [page, setPage] = useState('login');
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
-  const [books, setBooks] = useState([]);
   const userService = useCurrentUserQuery(setUser);
   const client = useApolloClient();
 
@@ -53,12 +52,10 @@ const App = () => {
         show={page === 'authors'}
       />
 
-      <Books setBooks={setBooks}
-        show={page === 'books'}
+      <Books show={page === 'books'}
       />
 
-      <Recommended user={user} books={books}
-        show={page === 'recommend'}
+      <Recommended user={user} show={page === 'recommend'}
       />
 
       <NewBook
