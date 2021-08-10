@@ -106,9 +106,9 @@ const resolvers = {
     Mutation: {
         addBook: async (root, args, { currentUser }) => {
 
-            if (!currentUser) {
-                throw new AuthenticationError('not authenticated');
-            }
+            // if (!currentUser) {
+            //     throw new AuthenticationError('not authenticated');
+            // }
 
             const foundAuthor = await Author.findOne({ name: args.author });
             let author = (!foundAuthor) ? new Author({ name: args.author }) : foundAuthor;
@@ -121,8 +121,8 @@ const resolvers = {
                     invalidArgs: args,
                 });
             }
-            pubsub.publish('BOOK_ADDED', { bookAdded: book });
-            return book;
+            pubsub.publish('BOOK_ADDED', { bookAdded: book.populate('author').execPopulate() });
+            return book.populate('author').execPopulate();
         },
         editAuthor: async (root, args, { currentUser }) => {
 

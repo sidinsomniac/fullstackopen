@@ -6,6 +6,8 @@ import Recommended from './components/Recommended';
 import LoginForm from "./components/LoginForm";
 import NewBook from './components/NewBook';
 import { useCurrentUserQuery } from "./customHook";
+import { useSubscription } from "@apollo/client";
+import { BOOK_ADDED } from "./queries";
 
 const App = () => {
   const [page, setPage] = useState('login');
@@ -13,6 +15,12 @@ const App = () => {
   const [user, setUser] = useState(null);
   const userService = useCurrentUserQuery(setUser);
   const client = useApolloClient();
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData: { data: { bookAdded } } }) => {
+      alert(`New book added: ${bookAdded.title} (${bookAdded.published}) - by ${bookAdded.author.name}`);
+    }
+  });
 
   const logout = () => {
     setToken(null);
