@@ -7,7 +7,7 @@ import LoginForm from "./components/LoginForm";
 import NewBook from './components/NewBook';
 import { useCurrentUserQuery } from "./customHook";
 import { useSubscription } from "@apollo/client";
-import { BOOK_ADDED } from "./queries";
+import { ALL_BOOKS, BOOK_ADDED } from "./queries";
 
 const App = () => {
   const [page, setPage] = useState('login');
@@ -16,9 +16,21 @@ const App = () => {
   const userService = useCurrentUserQuery(setUser);
   const client = useApolloClient();
 
+  const updateCacheWith = (addedBook) => {
+    const booksInStore = client.readQuery({ query: ALL_BOOKS });
+    const bookAdded = booksInStore.allBooks.map(books => books.id).includes(addedBook.id);
+    if (!bookAdded) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: { allBooks: booksInStore.allBooks.concat(addedBook) }
+      });
+    }
+  };
+
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData: { data: { bookAdded } } }) => {
       alert(`New book added: ${bookAdded.title} (${bookAdded.published}) - by ${bookAdded.author.name}`);
+      updateCacheWith(bookAdded);
     }
   });
 
