@@ -24,14 +24,14 @@ const getRating = (average: number, target: number): ratingTypes => {
     else return 4;
 };
 
-const parseExerciseArguments = (arguments: string[]): ExerciseStatValues => {
+const parseExerciseArguments = (args: string[]): ExerciseStatValues => {
     const exerciseHours = [];
-    for (let i = 2; i < process.argv.length; i++) {
-        exerciseHours.push(+process.argv[i]);
+    for (let i = 2; i < args.length; i++) {
+        exerciseHours.push(+args[i]);
     }
     const mappedArguments = exerciseHours.map(args => isNaN(args));
     if (mappedArguments.includes(true)) throw new Error("All provided arguments must be a number");
-    const target = exerciseHours.shift();
+    const target = exerciseHours.shift()!;
     console.log({
         target,
         exerciseHours
