@@ -1,7 +1,7 @@
-interface ExerciseStatValues {
-    target: number;
-    exerciseHours: number[];
-}
+// interface ExerciseStatValues {
+//     target: number;
+//     exerciseHours: number[];
+// }
 
 interface exerciseStats {
     periodLength: number,
@@ -24,25 +24,25 @@ const getRating = (average: number, target: number): ratingTypes => {
     else return 4;
 };
 
-const parseExerciseArguments = (args: string[]): ExerciseStatValues => {
-    const exerciseHours = [];
-    for (let i = 2; i < args.length; i++) {
-        exerciseHours.push(+args[i]);
-    }
-    const mappedArguments = exerciseHours.map(args => isNaN(args));
-    if (mappedArguments.includes(true)) throw new Error("All provided arguments must be a number");
-    const target = exerciseHours.shift()!;
-    console.log({
-        target,
-        exerciseHours
-    });
-    return {
-        target,
-        exerciseHours
-    };
-};
+// const parseExerciseArguments = (args: string[]): ExerciseStatValues => {
+//     const exerciseHours = [];
+//     for (let i = 2; i < args.length; i++) {
+//         exerciseHours.push(+args[i]);
+//     }
+//     const mappedArguments = exerciseHours.map(args => isNaN(args));
+//     if (mappedArguments.includes(true)) throw new Error("All provided arguments must be a number");
+//     const target = exerciseHours.shift() || 2;
+//     console.log({
+//         target,
+//         exerciseHours
+//     });
+//     return {
+//         target,
+//         exerciseHours
+//     };
+// };
 
-const calculateExercises = (target: number, exerciseHours: number[]): exerciseStats => {
+export const calculateExercises = (target: number, exerciseHours: number[]): exerciseStats => {
     const periodLength: number = exerciseHours.length;
     const trainingDays: number = exerciseHours.filter(hours => hours !== 0).length;
     const totalHours: number = exerciseHours.reduce((a, b) => a + b, 0);
@@ -61,9 +61,10 @@ const calculateExercises = (target: number, exerciseHours: number[]): exerciseSt
     };
 };
 
-try {
-    const { target, exerciseHours } = parseExerciseArguments(process.argv);
-    console.log(calculateExercises(target, exerciseHours));
-} catch (err) {
-    console.log('Error, something bad happened, message: ', err.message);
-}
+// try {
+//     const { target, exerciseHours } = parseExerciseArguments(process.argv);
+//     console.log(calculateExercises(target, exerciseHours));
+// } catch (err) {
+//     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+//     console.log('Error, something bad happened, message: ', err.message);
+// }
