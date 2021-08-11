@@ -1,3 +1,22 @@
+interface MeasurementValues {
+    height: number;
+    weight: number;
+}
+
+const parseBMIArguments = (args: Array<string>): MeasurementValues => {
+    if (args.length < 4) throw new Error('Not enough arguments');
+    if (args.length > 4) throw new Error('Too many arguments');
+
+    if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
+        return {
+            height: Number(args[2]),
+            weight: Number(args[3])
+        };
+    } else {
+        throw new Error('Provided values were not numbers!');
+    }
+};
+
 const calculateBmi = (height: number, weight: number): string => {
     const heightInMetres: number = height / 100;
     const Bmi: number = weight / heightInMetres ** 2;
@@ -10,4 +29,9 @@ const calculateBmi = (height: number, weight: number): string => {
     return remarks;
 };
 
-console.log(calculateBmi(180, 74));
+try {
+    const { height, weight } = parseBMIArguments(process.argv);
+    console.log(calculateBmi(height, weight));
+} catch (err) {
+    console.log('Error, something bad happened, message: ', err.message);
+}

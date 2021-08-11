@@ -1,3 +1,8 @@
+interface ExerciseStatValues {
+    target: number;
+    exerciseHours: number[];
+}
+
 interface exerciseStats {
     periodLength: number,
     trainingDays: number,
@@ -10,7 +15,6 @@ interface exerciseStats {
 
 type ratingTypes = 1 | 2 | 3 | 4;
 type ratingDescription = 'poor' | 'not too bad but could be better' | 'perfect' | 'outstanding';
-
 const ratingChart: ratingDescription[] = ['poor', 'not too bad but could be better', 'perfect', 'outstanding'];
 
 const getRating = (average: number, target: number): ratingTypes => {
@@ -20,7 +24,25 @@ const getRating = (average: number, target: number): ratingTypes => {
     else return 4;
 };
 
-const calculateExercises = (exerciseHours: number[], target: number): exerciseStats => {
+const parseExerciseArguments = (arguments: string[]): ExerciseStatValues => {
+    const exerciseHours = [];
+    for (let i = 2; i < process.argv.length; i++) {
+        exerciseHours.push(+process.argv[i]);
+    }
+    const mappedArguments = exerciseHours.map(args => isNaN(args));
+    if (mappedArguments.includes(true)) throw new Error("All provided arguments must be a number");
+    const target = exerciseHours.shift();
+    console.log({
+        target,
+        exerciseHours
+    });
+    return {
+        target,
+        exerciseHours
+    };
+};
+
+const calculateExercises = (target: number, exerciseHours: number[]): exerciseStats => {
     const periodLength: number = exerciseHours.length;
     const trainingDays: number = exerciseHours.filter(hours => hours !== 0).length;
     const totalHours: number = exerciseHours.reduce((a, b) => a + b, 0);
@@ -39,4 +61,9 @@ const calculateExercises = (exerciseHours: number[], target: number): exerciseSt
     };
 };
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+try {
+    const { target, exerciseHours } = parseExerciseArguments(process.argv);
+    console.log(calculateExercises(target, exerciseHours));
+} catch (err) {
+    console.log('Error, something bad happened, message: ', err.message);
+}
