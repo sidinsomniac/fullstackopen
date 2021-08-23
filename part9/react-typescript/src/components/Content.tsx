@@ -1,14 +1,11 @@
 import React from "react";
-import { CoursePart } from "../types";
+import CoursePart from "../types";
+import Part from "./Part";
 
 function Content({ courseParts }: { courseParts: CoursePart[] }): JSX.Element {
   return (
     <div>
-      {courseParts.map(part => (
-        <p>
-          {part.name} {part.exerciseCount}
-        </p>
-      ))}
+      <Part courseParts={courseParts} />
     </div>
   );
 }

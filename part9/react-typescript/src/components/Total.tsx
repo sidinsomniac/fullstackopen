@@ -1,5 +1,5 @@
 import React from "react";
-import { CoursePart } from "../types";
+import CoursePart from "../types";
 
 function Total({ courseParts }: { courseParts: CoursePart[] }) {
   return (
