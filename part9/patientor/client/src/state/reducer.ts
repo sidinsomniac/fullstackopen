@@ -18,6 +18,10 @@ interface AddPatient {
 
 export type Action = SetPatientList | SetVisitedPatient | AddPatient;
 
+export const setPatientList = (patientList: Patient[]): SetPatientList => ({ type: "SET_PATIENT_LIST", payload: patientList });
+export const setVisitedPatient = (patient: Patient): SetVisitedPatient => ({ type: "SET_VISITED_PATIENT", payload: patient });
+export const addPatient = (patient: Patient): AddPatient => ({ type: "ADD_PATIENT", payload: patient });
+
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "SET_PATIENT_LIST":
