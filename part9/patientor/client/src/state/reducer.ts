@@ -1,15 +1,22 @@
 import { State } from "./state";
 import { Patient } from "../types";
 
-export type Action =
-  | {
-      type: "SET_PATIENT_LIST";
-      payload: Patient[];
-    }
-  | {
-      type: "ADD_PATIENT";
-      payload: Patient;
-    };
+interface SetPatientList {
+  type: "SET_PATIENT_LIST";
+  payload: Patient[];
+}
+
+interface SetVisitedPatient {
+  type: "SET_VISITED_PATIENT";
+  payload: Patient;
+}
+
+interface AddPatient {
+  type: "ADD_PATIENT";
+  payload: Patient;
+}
+
+export type Action = SetPatientList | SetVisitedPatient | AddPatient;
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -22,6 +29,16 @@ export const reducer = (state: State, action: Action): State => {
             {}
           ),
           ...state.patients
+        }
+      };
+    case "SET_VISITED_PATIENT":
+      const alreadyAddedPatient = state.visitedPatients[action.payload.id];
+      if (alreadyAddedPatient) return state;
+      return {
+        ...state,
+        visitedPatients: {
+          ...state.visitedPatients,
+          [action.payload.id]: action.payload
         }
       };
     case "ADD_PATIENT":

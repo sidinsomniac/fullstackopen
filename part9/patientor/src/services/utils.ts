@@ -1,4 +1,4 @@
-import { Gender, NewPatientEntry } from "../types";
+import { Entry, Gender, NewPatientEntry } from "../types";
 
 type Fields = {
     name: unknown;
@@ -6,15 +6,17 @@ type Fields = {
     ssn: unknown;
     gender: unknown;
     occupation: unknown;
+    entries: unknown;
 };
 
-const toNewPatientEntry = ({ name, dateOfBirth, ssn, gender, occupation }: Fields): NewPatientEntry => {
+const toNewPatientEntry = ({ name, dateOfBirth, ssn, gender, occupation, entries }: Fields): NewPatientEntry => {
     const newPatientEntry = {
         name: parseString(name),
         dateOfBirth: parseDate(dateOfBirth),
         ssn: parseString(ssn),
         gender: parseGender(gender),
-        occupation: parseString(occupation)
+        occupation: parseString(occupation),
+        entries: parseEntries(entries)
     };
     return newPatientEntry;
 };
@@ -40,6 +42,13 @@ const parseGender = (gender: unknown): Gender => {
     return gender;
 };
 
+const parseEntries = (entries: unknown): Entry[] => {
+    if (!isEntry(entries) || !entries.length) {
+        throw new Error("Incorrect or missing entries:" + entries);
+    }
+    return entries;
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isGender = (gender: any): gender is Gender => {
     return Object.values(Gender).includes(gender);
@@ -51,6 +60,10 @@ const isString = (text: unknown): text is string => {
 
 const isDate = (date: string): boolean => {
     return Boolean(Date.parse(date));
+};
+
+const isEntry = (entries: unknown): entries is Entry[] => {
+    return Array.isArray(entries);
 };
 
 

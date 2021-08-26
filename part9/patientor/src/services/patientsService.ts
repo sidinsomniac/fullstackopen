@@ -12,9 +12,13 @@ const maskedPatients: SSNMaskedPatientType[] = (<Patient[]>patientData).map(({ i
     occupation
 }));
 
-const getPatients = () => patients;
+const getPatients = (): Patient[] => patients;
+
+const getPatient = (id: string): Patient | undefined => patients.find(patient => patient.id === id);
 
 const getMaskedPatients = (): SSNMaskedPatientType[] => maskedPatients;
+
+const getMaskedPatient = (id: string): SSNMaskedPatientType | undefined => maskedPatients.find(patient => patient.id === id);
 
 const addPatients = (newPatientEntry: NewPatientEntry): Patient => {
     const id: string = uuid();
@@ -28,6 +32,8 @@ const addPatients = (newPatientEntry: NewPatientEntry): Patient => {
 
 export default {
     getPatients,
+    getPatient,
     getMaskedPatients,
+    getMaskedPatient,
     addPatients
 };

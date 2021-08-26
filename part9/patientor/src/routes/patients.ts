@@ -8,6 +8,16 @@ router.get('/', (_, res) => {
     res.json(patients);
 });
 
+router.get('/:id', (req, res) => {
+    const { id } = req.params;
+    try {
+        const patient = patientsService.getPatient(id);
+        res.json(patient);
+    } catch (err) {
+        res.status(400).send(err.message);
+    }
+});
+
 router.post('/', (req, res) => {
     try {
         const newPatient = toNewPatientEntry(req.body);
@@ -17,5 +27,6 @@ router.post('/', (req, res) => {
         res.status(400).send(err.message);
     }
 });
+
 
 export default router;
