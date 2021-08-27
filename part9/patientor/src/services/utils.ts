@@ -43,7 +43,7 @@ const parseGender = (gender: unknown): Gender => {
 };
 
 const parseEntries = (entries: unknown): Entry[] => {
-    if (!isEntry(entries) || !entries.length) {
+    if (!isEntry(entries)) {
         throw new Error("Incorrect or missing entries:" + entries);
     }
     return entries;
@@ -63,7 +63,10 @@ const isDate = (date: string): boolean => {
 };
 
 const isEntry = (entries: unknown): entries is Entry[] => {
-    return Array.isArray(entries);
+    if (!Array.isArray(entries)) return false;
+    const entryLength = entries.length;
+    const filteredEntryLength = entries.filter(entry => ["Hospital", "OccupationalHealthcare", "HealthCheck"].includes(entry.type)).length;
+    return entryLength === filteredEntryLength;
 };
 
 

@@ -1,10 +1,8 @@
-import patientData from "../../data/patients.json";
+import { patientData as patients } from "../../data/patientData";
 import { NewPatientEntry, Patient, SSNMaskedPatientType } from "../types";
 import { v1 as uuid } from 'uuid';
 
-const patients: Patient[] = patientData as Patient[];
-
-const maskedPatients: SSNMaskedPatientType[] = (<Patient[]>patientData).map(({ id, name, dateOfBirth, gender, occupation }) => ({
+const maskedPatients: SSNMaskedPatientType[] = patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
     id,
     name,
     dateOfBirth,
