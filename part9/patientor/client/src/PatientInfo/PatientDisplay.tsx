@@ -1,6 +1,7 @@
 import React from "react";
 import { Icon, Header, Container } from "semantic-ui-react";
 import { Patient } from "../types";
+import Entries from "./Entries";
 
 function PatientDisplay({
   patient,
@@ -16,6 +17,7 @@ function PatientDisplay({
         </Header>
         <p>ssn: {patient.ssn}</p>
         <p>occupation: {patient.occupation}</p>
+        <Entries entries={patient.entries} />
       </Container>
     </div>
   );
