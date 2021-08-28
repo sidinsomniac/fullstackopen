@@ -1,7 +1,10 @@
 import React from "react";
+import { useStateValue } from "../state";
 import { Entry } from "../types";
 
 function Entries({ entries }: { entries: Entry[] | undefined }): JSX.Element {
+  const [{ diagnoses }] = useStateValue();
+
   return !entries?.length ? (
     <div>No entries</div>
   ) : (
@@ -15,8 +18,10 @@ function Entries({ entries }: { entries: Entry[] | undefined }): JSX.Element {
             </p>
             <ul>
               {entry.diagnosisCodes?.length &&
-                entry.diagnosisCodes.map((code, idx) => (
-                  <li key={idx}>{code}</li>
+                entry.diagnosisCodes.map(code => (
+                  <li key={code}>
+                    {code}: {diagnoses[code]?.name}
+                  </li>
                 ))}
             </ul>
           </li>

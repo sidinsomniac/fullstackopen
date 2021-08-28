@@ -1,5 +1,5 @@
 import { State } from "./state";
-import { Patient } from "../types";
+import { Diagnosis, Patient } from "../types";
 
 interface SetPatientList {
   type: "SET_PATIENT_LIST";
@@ -16,11 +16,17 @@ interface AddPatient {
   payload: Patient;
 }
 
-export type Action = SetPatientList | SetVisitedPatient | AddPatient;
+interface SetDiagnosis {
+  type: "SET_DIAGNOSIS",
+  payload: Diagnosis[];
+}
+
+export type Action = SetPatientList | SetVisitedPatient | AddPatient | SetDiagnosis;
 
 export const setPatientList = (patientList: Patient[]): SetPatientList => ({ type: "SET_PATIENT_LIST", payload: patientList });
 export const setVisitedPatient = (patient: Patient): SetVisitedPatient => ({ type: "SET_VISITED_PATIENT", payload: patient });
 export const addPatient = (patient: Patient): AddPatient => ({ type: "ADD_PATIENT", payload: patient });
+export const setDiagnosis = (diagnosis: Diagnosis[]): SetDiagnosis => ({ type: "SET_DIAGNOSIS", payload: diagnosis });
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -51,6 +57,15 @@ export const reducer = (state: State, action: Action): State => {
         patients: {
           ...state.patients,
           [action.payload.id]: action.payload
+        }
+      };
+    case "SET_DIAGNOSIS":
+      if (state.diagnoses.length) return state;
+      return {
+        ...state,
+        diagnoses: {
+          ...state.diagnoses,
+          ...action.payload.reduce((diagnoses, diagnosis) => ({ ...diagnoses, [diagnosis.code]: diagnosis }), {})
         }
       };
     default:

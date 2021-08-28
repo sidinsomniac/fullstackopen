@@ -73,7 +73,7 @@ const patients: Patient[] = [
                 type: 'HealthCheck',
                 description: 'Yearly control visit. Cholesterol levels back to normal.',
                 healthCheckRating: 0,
-                diagnosisCodes: ['S62.5', 'H43.2'],
+                diagnosisCodes: ['H35.29', 'H54.7'],
             },
             {
                 id: 'fcd59fa6-c4b4-4fec-ac4d-df4fe1f85f62',
@@ -82,7 +82,7 @@ const patients: Patient[] = [
                 type: 'OccupationalHealthcare',
                 employerName: 'FBI',
                 description: 'Prescriptions renewed.',
-                diagnosisCodes: ['S62.5', 'H43.2'],
+                diagnosisCodes: ['S62.5'],
             },
             {
                 id: '37be178f-a432-4ba4-aac2-f86810e36a15',
