@@ -50,6 +50,8 @@ interface HealthCheckEntry extends BaseEntry {
 
 export type Entry = HospitalEntry | OccupationalHealthcareEntry | HealthCheckEntry;
 
+export interface DiagnosisEntry { [id: string]: Diagnosis; }
+
 export interface Patient {
   id: string;
   name: string;
