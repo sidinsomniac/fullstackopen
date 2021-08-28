@@ -1,4 +1,5 @@
-import { Entry, Gender, NewPatientEntry } from "../types";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { HealthCheckEntry, EntryType, Gender, NewPatientEntry, HealthCheckRating } from "../types";
 
 type Fields = {
     name: unknown;
@@ -7,6 +8,15 @@ type Fields = {
     gender: unknown;
     occupation: unknown;
     entries: unknown;
+};
+
+type EntryField = {
+    id: unknown;
+    description: unknown;
+    date: unknown;
+    specialist: unknown;
+    type: unknown;
+    healthCheckRating: unknown;
 };
 
 const toNewPatientEntry = ({ name, dateOfBirth, ssn, gender, occupation, entries }: Fields): NewPatientEntry => {
@@ -19,6 +29,19 @@ const toNewPatientEntry = ({ name, dateOfBirth, ssn, gender, occupation, entries
         entries: parseEntries(entries)
     };
     return newPatientEntry;
+};
+
+export const toNewEntry = ({ id, description, date, specialist, type, healthCheckRating }: EntryField): HealthCheckEntry => {
+    const newEntry = {
+        id: parseString(id),
+        description: parseString(description),
+        date: parseDate(date),
+        specialist: parseString(specialist),
+        type: parseEntryType(type),
+        healthCheckRating: parseRating(healthCheckRating)
+    };
+
+    return newEntry;
 };
 
 const parseString = (string: unknown): string => {
@@ -42,16 +65,37 @@ const parseGender = (gender: unknown): Gender => {
     return gender;
 };
 
-const parseEntries = (entries: unknown): Entry[] => {
+const parseEntries = (entries: unknown): HealthCheckEntry[] => {
     if (!isEntry(entries)) {
         throw new Error("Incorrect or missing entries:" + entries);
     }
     return entries;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const parseEntryType = (entryType: unknown): EntryType.HEALTHCHECK => {
+    if (!entryType || !isEntryType(entryType)) {
+        throw new Error("Incorrect or missing entryType:" + entryType);
+    }
+    return entryType;
+};
+
+const parseRating = (rating: unknown): HealthCheckRating => {
+    if (!rating || !isRating(rating)) {
+        throw new Error("Incorrect or missing rating:" + rating);
+    }
+    return rating;
+};
+
 const isGender = (gender: any): gender is Gender => {
     return Object.values(Gender).includes(gender);
+};
+
+const isEntryType = (type: any): type is EntryType.HEALTHCHECK => {
+    return type === "HealthCheck";
+};
+
+const isRating = (rating: any): rating is HealthCheckRating => {
+    return Object.values(HealthCheckRating).includes(rating);
 };
 
 const isString = (text: unknown): text is string => {
@@ -62,7 +106,7 @@ const isDate = (date: string): boolean => {
     return Boolean(Date.parse(date));
 };
 
-const isEntry = (entries: unknown): entries is Entry[] => {
+const isEntry = (entries: unknown): entries is HealthCheckEntry[] => {
     if (!Array.isArray(entries)) return false;
     const entryLength = entries.length;
     const filteredEntryLength = entries.filter(entry => ["Hospital", "OccupationalHealthcare", "HealthCheck"].includes(entry.type)).length;
@@ -70,4 +114,4 @@ const isEntry = (entries: unknown): entries is Entry[] => {
 };
 
 
-export default toNewPatientEntry;
+export default { toNewPatientEntry, toNewEntry };

@@ -1,8 +1,8 @@
-import { patientData as patients } from "../../data/patientData";
-import { NewPatientEntry, Patient, SSNMaskedPatientType } from "../types";
+import { patientData, patients } from "../../data/patientData";
+import { HealthCheckEntry, NewPatientEntry, Patient, SSNMaskedPatientType } from "../types";
 import { v1 as uuid } from 'uuid';
 
-const maskedPatients: SSNMaskedPatientType[] = patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
+const maskedPatients: SSNMaskedPatientType[] = patientData().map(({ id, name, dateOfBirth, gender, occupation }) => ({
     id,
     name,
     dateOfBirth,
@@ -10,9 +10,13 @@ const maskedPatients: SSNMaskedPatientType[] = patients.map(({ id, name, dateOfB
     occupation
 }));
 
-const getPatients = (): Patient[] => patients;
+const getPatients = (): Patient[] => patientData();
 
-const getPatient = (id: string): Patient | undefined => patients.find(patient => patient.id === id);
+const getPatient = (id: string): [Patient | undefined, number] => {
+    const foundPatient = patientData().find(patient => patient.id === id);
+    const patientIndex = patientData().findIndex(patient => patient.id === id);
+    return [foundPatient, patientIndex];
+};
 
 const getMaskedPatients = (): SSNMaskedPatientType[] => maskedPatients;
 
@@ -22,10 +26,17 @@ const addPatients = (newPatientEntry: NewPatientEntry): Patient => {
     const id: string = uuid();
     const newPatient: Patient = {
         id,
-        ...newPatientEntry
+        ...newPatientEntry,
+        entries: []
     };
     patients.push(newPatient);
     return newPatient;
+};
+
+const addEntries = (patient: SSNMaskedPatientType, entry: HealthCheckEntry): Patient => {
+    const updatedPatient: Patient = { ...patient } as Patient;
+    updatedPatient.entries = updatedPatient.entries.concat(entry);
+    return updatedPatient;
 };
 
 export default {
@@ -33,5 +44,6 @@ export default {
     getPatient,
     getMaskedPatients,
     getMaskedPatient,
-    addPatients
+    addPatients,
+    addEntries
 };
