@@ -11,12 +11,12 @@ type Fields = {
 };
 
 type EntryField = {
-    id: unknown;
     description: unknown;
     date: unknown;
     specialist: unknown;
     type: unknown;
     healthCheckRating: unknown;
+    diagnosisCodes?: unknown;
 };
 
 const toNewPatientEntry = ({ name, dateOfBirth, ssn, gender, occupation, entries }: Fields): NewPatientEntry => {
@@ -31,14 +31,14 @@ const toNewPatientEntry = ({ name, dateOfBirth, ssn, gender, occupation, entries
     return newPatientEntry;
 };
 
-export const toNewEntry = ({ id, description, date, specialist, type, healthCheckRating }: EntryField): HealthCheckEntry => {
+export const toNewEntry = ({ description, date, specialist, type, healthCheckRating, diagnosisCodes }: EntryField): Omit<HealthCheckEntry, "id"> => {
     const newEntry = {
-        id: parseString(id),
         description: parseString(description),
         date: parseDate(date),
         specialist: parseString(specialist),
         type: parseEntryType(type),
-        healthCheckRating: parseRating(healthCheckRating)
+        healthCheckRating: parseRating(healthCheckRating),
+        diagnosisCodes: parseCodes(diagnosisCodes)
     };
 
     return newEntry;
@@ -86,6 +86,13 @@ const parseRating = (rating: unknown): HealthCheckRating => {
     return rating;
 };
 
+const parseCodes = (codes: unknown): string[] => {
+    if (!codes || !isArrayOfCode(codes)) {
+        throw new Error("Incorrect or missing diagnosis codes:" + codes);
+    }
+    return codes;
+};
+
 const isGender = (gender: any): gender is Gender => {
     return Object.values(Gender).includes(gender);
 };
@@ -96,6 +103,10 @@ const isEntryType = (type: any): type is EntryType.HEALTHCHECK => {
 
 const isRating = (rating: any): rating is HealthCheckRating => {
     return Object.values(HealthCheckRating).includes(rating);
+};
+
+const isArrayOfCode = (codes: unknown): codes is string[] => {
+    return Array.isArray(codes) && codes.every(code => typeof code === "string");
 };
 
 const isString = (text: unknown): text is string => {

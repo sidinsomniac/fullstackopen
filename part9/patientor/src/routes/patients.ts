@@ -1,7 +1,9 @@
 import express from 'express';
 import { patients } from "../../data/patientData";
 import patientsService from "../services/patientsService";
+import diagnosisService from "../services/diagnosisService";
 import patientService from "../services/utils";
+import { HealthCheckEntry } from "../types";
 // import { HealthCheckEntry } from "../types";
 const router = express.Router();
 
@@ -38,8 +40,8 @@ router.post('/:id/entries', (req, res) => {
     try {
         const [patient, idx] = patientsService.getPatient(id);
         if (patient) {
-            const newEntry = patientService.toNewEntry(req.body);
-            const addedPatient = patientsService.addEntries(patient, newEntry);
+            const newEntry = patientService.toNewEntry(req.body) as HealthCheckEntry;
+            const addedPatient = diagnosisService.addEntries(patient, newEntry);
             patients[idx] = addedPatient;
             res.status(200).json(addedPatient);
         } else {

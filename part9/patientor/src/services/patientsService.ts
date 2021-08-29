@@ -1,5 +1,5 @@
 import { patientData, patients } from "../../data/patientData";
-import { HealthCheckEntry, NewPatientEntry, Patient, SSNMaskedPatientType } from "../types";
+import { NewPatientEntry, Patient, SSNMaskedPatientType } from "../types";
 import { v1 as uuid } from 'uuid';
 
 const maskedPatients: SSNMaskedPatientType[] = patientData().map(({ id, name, dateOfBirth, gender, occupation }) => ({
@@ -33,17 +33,10 @@ const addPatients = (newPatientEntry: NewPatientEntry): Patient => {
     return newPatient;
 };
 
-const addEntries = (patient: SSNMaskedPatientType, entry: HealthCheckEntry): Patient => {
-    const updatedPatient: Patient = { ...patient } as Patient;
-    updatedPatient.entries = updatedPatient.entries.concat(entry);
-    return updatedPatient;
-};
-
 export default {
     getPatients,
     getPatient,
     getMaskedPatients,
     getMaskedPatient,
-    addPatients,
-    addEntries
+    addPatients
 };
